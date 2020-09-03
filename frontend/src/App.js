@@ -1,80 +1,58 @@
 import React, { Component, useState } from 'react';
-import { Link } from 'react-router-dom'
+import ReactDOM from "react-dom";
 import { Route } from 'react-router-dom'
 import serializeForm from 'form-serialize'
-import Rater from './Rater';
-import PageLayout from './PageLayout'
-import LoginButton from './LoginButton'
-import LogoutButton from './LogoutButton'
-import Profile from './Profile'
-
-import * as API from './API'
-
-import './App.css';
+import Projects from './components/Projects';
+import Main from './components/Main';
+import CreateProject from './components/CreateProject';
 import { useAuth0 } from "@auth0/auth0-react";
-
-
-
+import './App.css';
+import Menu from "./components/Menu";
+import LoginButton from "./components/LoginButton";
+import LogoutButton from "./components/LogoutButton";
+import Profile from "./components/Profile";
+import Content from "./components/Content";
 
 function App() {
+    const { isLoading, isAuthenticated } = useAuth0();
 
-  const [username, setUsername] = useState('');
+    if (isLoading) return <div>Loading...</div>;
 
-  const handleSubmit = (e) => {
-        e.preventDefault()
-        const values = serializeForm(e.target, {hash: true})
-        console.log('values', values)
-        // call API create user function
-        // API.get_messages().then(msg => this.setState({msg: msg}))
-        API.create_user(values.name).then(username => setUsername(username))
 
-  }
+  // const [username, setUsername] = useState('');
 
-  const { getAccessTokenSilently } = useAuth0();
-  const callSecureApi = async () => {
-
-    const apiUrl = "http://127.0.0.1:5000"
-    const token = await getAccessTokenSilently();
-        console.log(token)
-        const response = await fetch(`${apiUrl}/get_users`, {
-            headers: {
-                Authorization: `Bearer ${token}`,
-            },
-        });
-  };
-
-  // componentDidMount() {
-  //   API.get_hello_worl_msg()
-  //     .then((msg) => {
-  //       this.setState(() => ({
-  //         msg
-  //       }))
-  //     })
+  // const handleSubmit = (e) => {
+  //       e.preventDefault()
+  //       const values = serializeForm(e.target, {hash: true})
+  //       console.log('values', values)
+  //       // call API create user function
+  //       // API.get_messages().then(msg => this.setState({msg: msg}))
+  //       API.create_user(values.name).then(username => setUsername(username))
+  //
   // }
-  return (
-        <div>
-            <LoginButton></LoginButton>
-            <LogoutButton></LogoutButton>
-            <Profile></Profile>
 
-            {/*<PageLayout></PageLayout>*/}
-            <Route exact path='/' render={() => (
-            <div>
-                <p className='primary'>Hello {username}!</p>
-                <Rater></Rater>
-                <Link to={'get_users'} onClick={callSecureApi}>ClickMe</Link>
-            </div>
-            )}/>
-            <Route exact path='/get_users' render={() => (
-            <div>
-                <form onSubmit={handleSubmit}>
-                    <input type='text' name='name' placeholder='Name'></input>
-                    <button type>Add user</button>
-                </form>
-                <p>User is: {username}</p>
-                <Link to={'/'}>Back</Link>
-            </div>
-        )}/>
+  // const { getAccessTokenSilently } = useAuth0();
+  // const callSecureApi = async () => {
+  //
+  //   const apiUrl = "http://127.0.0.1:5000"
+  //   const token = await getAccessTokenSilently();
+  //   console.log(token)
+  //   const response = await fetch(`${apiUrl}/get_users`, {
+  //       headers: {
+  //           Authorization: `Bearer ${token}`,
+  //       },
+  //   });
+  // };
+
+
+  return (
+        <div className="container">
+            <div className="logo">Logo</div>
+            <div className="menu"><Menu/></div>
+            <div className="login"><LoginButton/><LogoutButton/></div>
+            <div className="profile"><Profile/></div>
+            <div className="content"><Content/></div>
+            <div className="footer">Footer</div>
         </div>
     )
 

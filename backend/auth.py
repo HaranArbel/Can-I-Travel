@@ -7,7 +7,7 @@ from urllib.request import urlopen
 
 AUTH0_DOMAIN = 'dev-j7mi52gx.eu.auth0.com'
 ALGORITHMS = ['RS256']
-API_AUDIENCE = 'http://localhost:5000'
+API_AUDIENCE = 'myApi' #'http://localhost:5000'
 
 ## AuthError Exception
 '''

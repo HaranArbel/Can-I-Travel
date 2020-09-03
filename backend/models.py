@@ -31,14 +31,75 @@ def db_drop_and_create_all():
     db.create_all()
 
 
+association_table = db.Table('association',
+    db.Column('employee_id', Integer, db.ForeignKey('employees.id')),
+    db.Column('project_id', Integer, db.ForeignKey('projects.id'))
+)
+
 '''
-Drink
+User
 a persistent drink entity, extends the base SQLAlchemy Model
 '''
-class User(db.Model):
-    __tablename__ = 'users'
+class Project(db.Model):
+    __tablename__ = 'projects'
     id = Column(Integer(), primary_key=True)
     name = Column(String(80), nullable=True)
+    employee = Column(String(80), nullable=True)
+
+    '''
+    insert()
+        inserts a new model into a database
+        the model must have a unique name
+        the model must have a unique id or null id
+        EXAMPLE
+            drink = Drink(title=req_title, recipe=req_recipe)
+            drink.insert()
+    '''
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    '''
+    delete()
+        deletes a new model into a database
+        the model must exist in the database
+        EXAMPLE
+            drink = Drink(title=req_title, recipe=req_recipe)
+            drink.delete()
+    '''
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    '''
+    update()
+        updates a new model into a database
+        the model must exist in the database
+        EXAMPLE
+            drink = Drink.query.filter(Drink.id == id).one_or_none()
+            drink.title = 'Black Coffee'
+            drink.update()
+    '''
+    def update(self):
+        db.session.commit()
+
+    def short(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'employee': self.employee
+        }
+
+'''
+User
+a persistent drink entity, extends the base SQLAlchemy Model
+'''
+class Employee(db.Model):
+    __tablename__ = 'employees'
+    id = Column(String(), primary_key=True)
+    name = Column(String(80), nullable=True)
+    name = Column(String(80), nullable=True)
+    projects = db.relationship('Project', secondary=association_table, backref=db.backref('employees', lazy=True))
 
     '''
     insert()

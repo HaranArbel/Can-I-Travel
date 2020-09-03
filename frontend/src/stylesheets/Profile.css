@@ -1,0 +1,52 @@
+
+.Profile{
+  height: 100%;
+  width: 100%;
+  background-color: ghostwhite;
+  display: grid;
+  grid-template-rows: 90px 40px 50px;
+  padding-top: 20px;
+  /*gap: 10px;*/
+  grid-template-areas:
+  "ImageDiv"
+  "ProfileName"
+  "ProfileEmail"
+;
+}
+
+.ImageDiv{
+  grid-area: ImageDiv;
+  margin: auto
+}
+
+.ProfileImg {
+  border-radius: 100%;
+  border: 5px solid ghostwhite;
+  width: 90px;
+}
+
+.ProfileImg:hover {
+  border-color: pink;
+}
+
+.ProfileName{
+  grid-area: ProfileName;
+  padding-top: 10px;
+  color: black;
+  font-size: 17px;
+  font-family: proximaNovaBold;
+  text-align: center;
+}
+
+.ProfileName:hover{
+  text-decoration: underline
+}
+
+.ProfileEmail{
+  grid-area: ProfileEmail;
+  color: black;
+  font-size: 15px;
+  text-align: center;
+  font-family: proximaNova;
+
+}
