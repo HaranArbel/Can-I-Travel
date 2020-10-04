@@ -1,0 +1,56 @@
+
+/*html, .container{*/
+/*  height: 100vh;*/
+/*  width: 100vw;*/
+/*  background-color: ghostwhite;*/
+/*  display: grid;*/
+/*  grid-template: 1fr 5fr 1fr / 1fr 6fr 1fr;*/
+/*  gap: 10px;*/
+/*  grid-template-areas:*/
+/*  "logo menu login"*/
+/*  "sidebar content content"*/
+/*  "footer footer footer"*/
+/*;*/
+/*}*/
+
+/*.logo{*/
+/*  background-color: pink;*/
+/*  grid-area: logo;*/
+/*  !*grid-row: 1;*!*/
+/*  !*grid-column: 1;*!*/
+/*}*/
+
+/*.header{*/
+/*  background-color: hotpink;*/
+/*  grid-area: header;*/
+/*  !*grid-row: 1;*!*/
+/*  !*grid-column: 2;*!*/
+/*}*/
+
+/*.login{*/
+/*  background-color: pink;*/
+/*  grid-area: login;*/
+/*  !*grid-row: 1;*!*/
+/*  !*grid-column: 3;*!*/
+/*}*/
+
+/*.profile{*/
+/*  background-color: skyblue;*/
+/*  grid-area: sidebar;*/
+/*  !*grid-row: 2;*!*/
+/*  !*grid-column: 1;*!*/
+/*}*/
+
+/*.content{*/
+/*  background-color: pink;*/
+/*  grid-area: content;*/
+/*  !*grid-row: 2;*!*/
+/*  !*grid-column: 2;*!*/
+/*}*/
+
+/*.footer{*/
+/*  background-color: papayawhip;*/
+/*  grid-area: footer;*/
+/*  !*grid-row: 3;*!*/
+/*  !*grid-column: 1 / -1;*!*/
+/*}*/

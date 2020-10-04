@@ -1,87 +1,93 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
-import { Route } from 'react-router-dom'
+import React, {Component, useEffect, useState} from 'react';
+import ReactDOM from "react-dom";
+import {Route, Link, Redirect, useHistory} from 'react-router-dom'
 import serializeForm from 'form-serialize'
-import Rater from './Rater';
-import PageLayout from './PageLayout'
-import LoginButton from './LoginButton'
-import LogoutButton from './LogoutButton'
-import Profile from './Profile'
-import callSecureApi from './CallSecureApi'
-
-import * as API from './API'
-
+import { useAuth0 } from "@auth0/auth0-react";
+import SelectCountry from "./components/SelectCountry";
+import LoginButton from "./components/LoginButton";
 import './App.css';
-
-// import { useAuth0 } from "@auth0/auth0-react";
-// const { getAccessTokenSilently } = useAuth0();
-//
-// const callSecureApi = async () => {
-//     const apiUrl = "http://127.0.0.1:5000"
-//     const token = await getAccessTokenSilently();
-//
-//         const response = await fetch(`${apiUrl}/get_users`, {
-//             headers: {
-//                 Authorization: `Bearer ${token}`,
-//             },
-//         });
-//   };
+import ListDestinations from "./components/ListDestinations";
+import ProtectedRoute from "./components/ProtectedRoute";
+import Can from './components/Can';
+import Profile from './components/Profile';
+import { fetchDestinations } from  './components/API';
+import CountryPage from "./components/CountryPage";
+import CreateDestination from "./components/CreateDestination";
 
 
-class App extends Component {
+function App() {
+    const { user, isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const [destinations, setDestinations] = useState([]);
+    const [countryId, setCountryId] = useState('1');
 
-  state = {
-      username: ''
-  }
+    // const history = useHistory();
 
-  handleSubmit = (e) => {
-        e.preventDefault()
-        const values = serializeForm(e.target, {hash: true})
-        console.log('values', values)
-        // call API create user function
-        // API.get_messages().then(msg => this.setState({msg: msg}))
-        API.create_user(values.name).then(username => this.setState({username: username}))
+    // const handleLocationChange = (event) => {
+    //     setCountry(event.target.value)
+    // }
+    //
+    // const selectCountry = () => {
+    //
+    // }
+    //
+    // useEffect(() => {
+    //     countryWasSet = true;
+    // }, [country])
 
-  }
+    //--------------------------------------------------------
+    // let history = useHistory();
 
 
-  // componentDidMount() {
-  //   API.get_hello_worl_msg()
-  //     .then((msg) => {
-  //       this.setState(() => ({
-  //         msg
-  //       }))
-  //     })
-  // }
-  render() {
+    //--------------------------------------------------
+
+    const handleOnSubmit = (event) => {
+        event.preventDefault();
+        const token = getAccessTokenSilently();
+        // alert(`Submitting selectedCountry ${selectedCountry}`)
+        const response = fetchDestinations(token, countryId, setDestinations);
+    }
+
     return (
+
+        // <div>
+        //     <LoginButton/>
+        //     {isAuthenticated && <Can
+        //           role={user.role}
+        //           perform="get:countries"
+        //           yes={() => (
+        //             <h2>User can do it</h2>
+        //           )}
+        //           no={() => <h2>User can't do it</h2>}
+        //     />}
+        // </div>
+
         <div>
-            <LoginButton></LoginButton>
-            <LogoutButton></LogoutButton>
-            <Profile></Profile>
-
-            {/*<PageLayout></PageLayout>*/}
             <Route exact path='/' render={() => (
-    <div>
-        <p className='primary'>Hello {this.state.username}!</p>
-        <Rater></Rater>
-        <Link to={'get_users'} onClick={callSecureApi}>ClickMe</Link>
-    </div>
-)}/>
-            <Route exact path='/get_users' render={() => (
-    <div>
-        <form onSubmit={this.handleSubmit}>
-            <input type='text' name='name' placeholder='Name'></input>
-            <button type>Add user</button>
-        </form>
-        <p>User is: {this.state.username}</p>
-        <Link to={'/'}>Back</Link>
-    </div>
-)}/>
-        </div>
-    )
-  }
+                <div>
+                    {/*{isAuthenticated && (<Profile user={user}/>)}*/}
+                    {isLoading && (<div>Loading...</div>)}
+                    {!isAuthenticated && (<LoginButton/>)}
+                    {isAuthenticated && (
+                        <SelectCountry
+                        countryId={countryId}
+                        setCountryId={setCountryId}
+                        onSubmit={handleOnSubmit}
+                    />
+                    )}
+                    {destinations.length != 0 && (
+                        <ListDestinations
+                            destinations={destinations}
+                        />)
+                    }
+                </div>
+            )}/>
+            <Route exact path='/countries/:destination_id' component={CountryPage}/>
+            <Route exact path='/create_destination' component={CreateDestination}/>
 
+      </div>
+
+
+    );
 }
 
 export default App;

@@ -1,0 +1,10 @@
+
+.Projects{
+  /*display: grid;*/
+  width: 100%;
+  height: 20%;
+  position: absolute;
+  margin-left: 20%;
+  padding-top: 20px;
+}
+
