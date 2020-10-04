@@ -85,8 +85,6 @@ function App() {
             <Route exact path='/create_destination' component={CreateDestination}/>
 
       </div>
-
-
     );
 }
 

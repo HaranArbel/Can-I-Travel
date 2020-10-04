@@ -1,3 +1,4 @@
+
 //
 // const headers = {
 //   'Accept': 'application/json',
@@ -65,6 +66,3 @@ export const fetchCountryInfo = async (countryId, setCountry) => {
       console.log(error.message);
     }
 }
-
-
-
