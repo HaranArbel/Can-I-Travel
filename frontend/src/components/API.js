@@ -1,11 +1,4 @@
 
-//
-// const headers = {
-//   'Accept': 'application/json',
-//   'Authorization': `Bearer ${token}`
-// }
-
-import {useAuth0} from "@auth0/auth0-react";
 
 export const fetchDestinations = async (token, countryId, setDestinations) => {
     try {
@@ -62,6 +55,26 @@ export const addDestination = async (token, country, setCountry, destinationId) 
     try{
         const response = await fetch(`/countries/${country.id}/add_destination`, {
             method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({'destinationId': destinationId})
+        });
+        const responseData = await response.json();
+        setCountry(responseData.country);
+
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+
+export const deleteDestination = async (token, country, setCountry, destinationId) => {
+
+    try{
+        const response = await fetch(`/countries/${country.id}/delete_destination`, {
+            method: 'DELETE',
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`,

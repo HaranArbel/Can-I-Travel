@@ -149,7 +149,29 @@ def add_destination(payload, country_id):
         destination_id = body.get('destinationId')
         print(destination_id)
         destination = Country.query.filter(Country.id == destination_id).first()
-        country.destinations.append(destination)
+        if destination not in country.destinations:
+            country.destinations.append(destination)
+        country.update()
+
+        return jsonify({
+            # 'success': True,
+            'country': country.long(),
+        })
+    except Exception as e:
+        print(e)
+
+
+@app.route('/countries/<int:country_id>/delete_destination', methods=['DELETE'])
+@requires_auth('get:countries')
+def delete_destination(payload, country_id):
+
+    try:
+        country = Country.query.filter(Country.id == country_id).first()
+        body = request.get_json()
+        destination_id = body.get('destinationId')
+        print(destination_id)
+        destination = Country.query.filter(Country.id == destination_id).first()
+        country.destinations.remove(destination)
         country.update()
 
         return jsonify({

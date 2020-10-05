@@ -9,7 +9,7 @@ import './App.css';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Can from './components/Can';
 import Profile from './components/Profile';
-import { fetchDestinations } from  './components/API';
+import { fetchDestinations, deleteDestination } from  './components/API';
 import CountryPage from "./components/CountryPage";
 import CreateDestination from "./components/CreateDestination";
 import ListCountries from "./components/ListCountries";
@@ -77,9 +77,7 @@ function App() {
                     />
                 </div>
             )}/>
-            <Route exact path='/countries/:destination_id' component={CountryPage}/>
-            <Route exact path='/create_destination' component={CreateDestination}/>
-
+            <Route path='/countries/:destination_id' component={CountryPage}/>
       </div>
     );
 }

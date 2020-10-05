@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { Route, Link, useParams } from "react-router-dom";
-import {fetchCountries, fetchCountryInfo, fetchDestinations} from "./API";
+import {deleteDestination, fetchCountries, fetchCountryInfo, fetchDestinations} from "./API";
 import {useAuth0} from "@auth0/auth0-react";
 import ListCountries from "./ListCountries";
 import SelectCountry from "./SelectCountry";
@@ -16,6 +16,11 @@ export default function CountryPage(props){
         'alias': '',
         'destinations': [],
     });
+
+    const handleOnDeleteDestination = async (destinationId) => {
+        const token = await getAccessTokenSilently();
+        const response = deleteDestination(token, country, setCountry, destinationId);
+    }
 
     const handleOnSubmit = async (event) => {
         event.preventDefault();
@@ -45,7 +50,10 @@ export default function CountryPage(props){
                 <h2>{country.name}</h2>
                 <h3>{country.alias}</h3>
                 <h3>Who can enter {country.name}?</h3>
-                <ListCountries countries={country.destinations}/>
+                <ListCountries
+                    countries={country.destinations}
+                    onDeleteCountry={(destinationId) => handleOnDeleteDestination(destinationId)}
+                />
             </div>
 
             <Link
