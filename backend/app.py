@@ -127,7 +127,8 @@ def get_countries(payload):
 
 
 @app.route('/countries/<int:country_id>')
-def get_country(country_id):
+@requires_auth('get:countries')
+def get_country(payload, country_id):
     country = Country.query.filter(Country.id == country_id).first()
     for destination in country.destinations:
         print("destination print:" + str(destination))
@@ -143,7 +144,8 @@ def get_country(country_id):
 
 
 @app.route('/destinations/<int:country_id>')
-def get_destinations(country_id):
+@requires_auth('get:countries') #todo change to get:destinations or something
+def get_destinations(payload, country_id):
     country = Country.query.filter(Country.id == country_id).first()
     print("getting destinations for country: " + country.name)
     data = []

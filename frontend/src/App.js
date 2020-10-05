@@ -6,13 +6,13 @@ import { useAuth0 } from "@auth0/auth0-react";
 import SelectCountry from "./components/SelectCountry";
 import LoginButton from "./components/LoginButton";
 import './App.css';
-import ListDestinations from "./components/ListDestinations";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Can from './components/Can';
 import Profile from './components/Profile';
 import { fetchDestinations } from  './components/API';
 import CountryPage from "./components/CountryPage";
 import CreateDestination from "./components/CreateDestination";
+import ListCountries from "./components/ListCountries";
 
 
 function App() {
@@ -40,9 +40,9 @@ function App() {
 
     //--------------------------------------------------
 
-    const handleOnSubmit = (event) => {
+    const handleOnSubmit = async (event) => {
         event.preventDefault();
-        const token = getAccessTokenSilently();
+        const token = await getAccessTokenSilently();
         // alert(`Submitting selectedCountry ${selectedCountry}`)
         const response = fetchDestinations(token, countryId, setDestinations);
     }
@@ -66,19 +66,15 @@ function App() {
                 <div>
                     {/*{isAuthenticated && (<Profile user={user}/>)}*/}
                     {isLoading && (<div>Loading...</div>)}
-                    {!isAuthenticated && (<LoginButton/>)}
-                    {isAuthenticated && (
-                        <SelectCountry
+                    <LoginButton/>
+                    <SelectCountry
                         countryId={countryId}
                         setCountryId={setCountryId}
                         onSubmit={handleOnSubmit}
                     />
-                    )}
-                    {destinations.length != 0 && (
-                        <ListDestinations
-                            destinations={destinations}
-                        />)
-                    }
+                    <ListCountries
+                        countries={destinations}
+                    />
                 </div>
             )}/>
             <Route exact path='/countries/:destination_id' component={CountryPage}/>

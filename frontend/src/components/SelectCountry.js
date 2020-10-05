@@ -7,11 +7,14 @@ export default function SelectCountry(props){
     const { countryId, setCountryId, onSubmit } = props;
     const [countries, setCountries] = useState([]);
 
-     useEffect( async () => {
-         const token = await getAccessTokenSilently()
-        const response = fetchCountries(token, setCountries)
-    }, [])
+     async function getData() {
+        const token = await getAccessTokenSilently();
+        const response = fetchCountries(token, setCountries);
+    }
 
+     useEffect(  () => {
+         getData()
+    }, []);
 
     return (
         isAuthenticated && (

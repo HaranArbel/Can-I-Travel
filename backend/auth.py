@@ -54,6 +54,10 @@ def get_token_auth_header():
         }, 401)
 
     elif len(parts) > 2:
+        print("token len is: " + str(len(parts)))
+        print("the parts are: ")
+        for part in parts:
+            print("part: " + part)
         raise AuthError({
             'code': 'invalid_header',
             'description': 'Authorization header must be bearer token.'

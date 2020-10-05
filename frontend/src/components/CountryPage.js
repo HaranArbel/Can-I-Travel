@@ -2,11 +2,12 @@ import React, {useState, useEffect} from "react";
 import { Route, Link, useParams } from "react-router-dom";
 import {fetchCountries, fetchCountryInfo} from "./API";
 import {useAuth0} from "@auth0/auth0-react";
+import ListCountries from "./ListCountries";
 import SelectCountry from "./SelectCountry";
 
 export default function CountryPage(props){
     const { destination_id } = useParams();
-    // const { getAccessTokenSilently } = useAuth0();
+    const { getAccessTokenSilently } = useAuth0();
     const [country, setCountry] = useState({
         'id': 0,
         'name': '',
@@ -14,10 +15,14 @@ export default function CountryPage(props){
         'destinations': [],
     });
 
-    useEffect( async () => {
-         // const token = await getAccessTokenSilently()
-         const response = fetchCountryInfo(destination_id, setCountry)
-    }, [])
+    async function getData() {
+        const token = await getAccessTokenSilently();
+        const response = fetchCountryInfo(token, destination_id, setCountry)
+    }
+
+     useEffect(  () => {
+         getData()
+    }, []);
 
     return (
         <div>
@@ -30,6 +35,9 @@ export default function CountryPage(props){
             </div>
             <div className='destination-details'>
                 <h2>{country.name}</h2>
+                <h3>{country.alias}</h3>
+                <h3>Who can enter {country.name}?</h3>
+                <ListCountries countries={country.destinations}/>
             </div>
 
             <Link
