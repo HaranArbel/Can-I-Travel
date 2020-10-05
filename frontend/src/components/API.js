@@ -10,7 +10,7 @@ import {useAuth0} from "@auth0/auth0-react";
 export const fetchDestinations = async (token, countryId, setDestinations) => {
     try {
         // const token = localStorage.getItem('token')
-        const response = await fetch(`/destinations/${countryId}`, {
+        const response = await fetch(`countries/${countryId}/destinations`, {
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${token}`,
@@ -49,15 +49,29 @@ export const fetchCountryInfo = async (token, countryId, setCountry) => {
                 Authorization: `Bearer ${token}`,
             },
         });
-
         const responseData = await response.json();
-        // return responseData.country
-
         setCountry(responseData.country);
-        // Country((country) => ({country: responseData.country}));
-        console.log("country received from backend: " + responseData.country.name)
-        console.log("country received from backend: " + responseData.country.alias)
-        // console.log("country received from backend: " + responseData.country.destinations)
+
+    } catch (error) {
+      console.log(error.message);
+    }
+}
+
+export const addDestination = async (token, country, setCountry, destinationId) => {
+
+    try{
+        const response = await fetch(`/countries/${country.id}/add_destination`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({'destinationId': destinationId})
+        });
+        const responseData = await response.json();
+        setCountry(responseData.country);
+
     } catch (error) {
       console.log(error.message);
     }

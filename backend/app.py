@@ -109,23 +109,6 @@ def get_countries(payload):
     })
 
 
-# @app.route('/create_destination/<int:country_id>', methods=['PATCH'])
-# def create_destination(country_id):
-#
-#     country = Country.query.filter(Country.id == country_id).first()
-#     body = request.get_json()
-#
-#     destination = body.get('destination')
-#     # recipe = json.dumps(body.get('recipe'))
-#     country.destinations.append(destination)
-#     country.update()
-
-    # return jsonify({
-    #     # 'success': True,
-    #     # 'drinks': [country.long()],
-    # })
-
-
 @app.route('/countries/<int:country_id>')
 @requires_auth('get:countries')
 def get_country(payload, country_id):
@@ -136,14 +119,8 @@ def get_country(payload, country_id):
         'country': country.long()
     })
 
-#
-# @app.route('/countries/<int:country_id>')
-# def get_country(country_id):
-#     country = Country.filter(Country.id == country_id).first()
-#     return country.short()
 
-
-@app.route('/destinations/<int:country_id>')
+@app.route('/countries/<int:country_id>/destinations')
 @requires_auth('get:countries') #todo change to get:destinations or something
 def get_destinations(payload, country_id):
     country = Country.query.filter(Country.id == country_id).first()
@@ -162,18 +139,25 @@ def get_destinations(payload, country_id):
     })
 
 
-# @app.route('/countries', methods=['POST'])
-# def create_country(payload):
-#     body = request.get_json()
-#     name = body.get('name')
-#
-#     country = Country(name=name)
-#     country.insert()
-#
-#     return jsonify({
-#           'success': True,
-#           'country': [country.long()],
-#     })
+@app.route('/countries/<int:country_id>/add_destination', methods=['PATCH'])
+@requires_auth('get:countries')
+def add_destination(payload, country_id):
+
+    try:
+        country = Country.query.filter(Country.id == country_id).first()
+        body = request.get_json()
+        destination_id = body.get('destinationId')
+        print(destination_id)
+        destination = Country.query.filter(Country.id == destination_id).first()
+        country.destinations.append(destination)
+        country.update()
+
+        return jsonify({
+            # 'success': True,
+            'country': country.long(),
+        })
+    except Exception as e:
+        print(e)
 
 
 # def get_user_id(payload):

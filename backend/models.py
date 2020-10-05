@@ -49,6 +49,15 @@ class Country(db.Model):
             self.destinations.append(destination)
             db.session.commit()
 
+    '''
+        update()
+            updates a new model into a database
+            the model must exist in the database
+    '''
+    def update(self):
+        db.session.commit()
+
+
     def short(self):
         return {
             'id': self.id,
