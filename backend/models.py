@@ -17,7 +17,6 @@ setup_db(app)
 def setup_db(app):
     app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
-    # app.config["IMAGE_STORE_PATH"] = '/public/app/images'
     db.app = app
     db.init_app(app)
     db_drop_and_create_all()
@@ -39,6 +38,7 @@ class Country(db.Model):
                                secondaryjoin=(origins.c.destination_id == id),
                                backref=db.backref('origins', lazy='dynamic'),
                                lazy='dynamic')
+    users = db.relationship('User', backref='country')
 
     def insert(self):
         db.session.add(self)
@@ -75,6 +75,37 @@ class Country(db.Model):
 
     def __repr__(self):
         return f'<Country {self.id} {self.name} {self.alias}>'
+
+
+class User(db.Model):
+    id = db.Column(db.String(), primary_key=True)
+    name = db.Column(db.String(80), unique=True)
+    email = db.Column(db.String(80))
+    country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
+
+    def insert(self):
+        db.session.add(self)
+        db.session.commit()
+
+    '''
+        update()
+            updates a new model into a database
+            the model must exist in the database
+    '''
+    def update(self):
+        db.session.commit()
+
+    def short(self):
+        return {
+            'id': self.id,
+            'name': self.name,
+            'email': self.email,
+            'country id': self.country_id,
+        }
+
+    def __repr__(self):
+        return f'<User {self.id} {self.name} {self.email} {self.country_id}>'
+
 
 '''
 db_drop_and_create_all()

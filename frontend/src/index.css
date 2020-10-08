@@ -64,7 +64,7 @@ body, .app {
 
 /* CreateContact */
 
-.close-create-destination {
+.close-add-destination {
   display: block;
   width: 60px;
   height: 60px;

@@ -9,7 +9,8 @@ export default function SelectCountry(props){
 
      async function getData() {
         const token = await getAccessTokenSilently();
-        const response = fetchCountries(token, setCountries);
+        const response = await fetchCountries(token);
+        setCountries(response.countries);
     }
 
      useEffect(  () => {
@@ -23,7 +24,7 @@ export default function SelectCountry(props){
               Select your country:
               <select value={countryId} onChange={(event) => setCountryId(event.target.value)}>
                   {countries.map(country => (
-                      <option key={country.id} value={country.id}>{country.name}</option>
+                      <option key={country.id} value={country.id}> {country.name} </option>
                   ))}
               </select>
             </label>

@@ -3,22 +3,17 @@ import ReactDOM from "react-dom";
 import {Route, Link, Redirect, useHistory} from 'react-router-dom'
 import serializeForm from 'form-serialize'
 import { useAuth0 } from "@auth0/auth0-react";
-import SelectCountry from "./components/SelectCountry";
-import LoginButton from "./components/LoginButton";
-import './App.css';
 import ProtectedRoute from "./components/ProtectedRoute";
 import Can from './components/Can';
-import Profile from './components/Profile';
 import { fetchDestinations, deleteDestination } from  './components/API';
 import CountryPage from "./components/CountryPage";
-import CreateDestination from "./components/CreateDestination";
-import ListCountries from "./components/ListCountries";
+import Home from "./components/Home";
 
 
 function App() {
     const { user, isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [destinations, setDestinations] = useState([]);
-    const [countryId, setCountryId] = useState('1');
+    const [countryId, setCountryId] = useState('1'); //string or number???????
 
     // const history = useHistory();
 
@@ -44,7 +39,8 @@ function App() {
         event.preventDefault();
         const token = await getAccessTokenSilently();
         // alert(`Submitting selectedCountry ${selectedCountry}`)
-        const response = fetchDestinations(token, countryId, setDestinations);
+        const response = await fetchDestinations(token, countryId, setDestinations);
+        setDestinations(response.destinations);
     }
 
     return (
@@ -63,21 +59,17 @@ function App() {
 
         <div>
             <Route exact path='/' render={() => (
-                <div>
-                    {/*{isAuthenticated && (<Profile user={user}/>)}*/}
-                    {isLoading && (<div>Loading...</div>)}
-                    <LoginButton/>
-                    <SelectCountry
-                        countryId={countryId}
-                        setCountryId={setCountryId}
-                        onSubmit={handleOnSubmit}
-                    />
-                    <ListCountries
-                        countries={destinations}
-                    />
-                </div>
+                <Home
+                    isLoading={isLoading}
+                    user={user}
+                    isAuthenticated={isAuthenticated}
+                    countryId={countryId}
+                    setCountryId={setCountryId}
+                    handleOnSubmit={handleOnSubmit}
+                    destinations={destinations}/>
             )}/>
             <Route path='/countries/:destination_id' component={CountryPage}/>
+
       </div>
     );
 }
