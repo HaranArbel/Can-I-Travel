@@ -7,7 +7,7 @@ from auth import requires_auth #,AuthError
 import re
 # def create_app(test_config=None):
 # create and configure the app
-from models import setup_db, Country
+from models import setup_db, Country, User
 
 
 app = Flask(__name__)
@@ -528,16 +528,58 @@ AF.add_destination(AD)
 
 
 #----------------------------------------------------------------------------------
+# todo: think about scenario when user changes their location. they're already in the table and we do a POST, which will fail.
+
+@app.route('/users/add', methods=['POST'])
+@requires_auth('get:countries')
+def add_user(payload):
+    try:
+        body = request.get_json()
+        user_id = body.get('userId')
+        name = body.get('name') #TODO remove email and name they are stored on Auth0? (If user changes their email)
+        email = body.get('email')
+        country_id = body.get('countryId')
+        if country_id == '':
+            raise Exception("the user country is empty! :OO")
+        user = User.query.filter(User.user_id == user_id).first()
+        if user is None:
+            user = User(user_id, name, email, country_id)
+            user.insert()
+        else:
+            print("user is Noneeeee")
+            user.country_id = country_id
+            user.update()
+
+        return jsonify({
+            'new_user': user.short(),
+        })
+    except Exception as e:
+        print(e)
+        abort(422)
 
 
 @app.route('/countries')
 @requires_auth('get:countries')
 def get_countries(payload):
     countries = Country.query.all()
-    print([country.short() for country in countries])
+    # print([country.short() for country in countries])
     return jsonify({
         'countries': [country.short() for country in countries]
     })
+
+
+@app.route('/users/<string:user_id>')
+@requires_auth('get:countries')
+def get_country_for_user(payload, user_id):
+    user = User.query.filter(User.user_id == user_id).first()
+    if user is not None:
+        return jsonify({
+            'country': user.country_id
+        })
+    else:
+        return jsonify({
+            'country': ''
+        })
 
 
 @app.route('/countries/<int:country_id>')
@@ -612,17 +654,6 @@ def delete_destination(payload, country_id):
     except Exception as e:
         print(e)
 
-
-# def get_user_id(payload):
-#     # if not payload: error
-#     # if | not in payload error
-#     # if sub not in payload
-#     # user_id = re.match(".*|(.*)", payload["sub"]).group(1)
-#     user_id = payload["sub"]
-#     return user_id
-
-
-#
 
 #   return app
 #

@@ -1,14 +1,30 @@
-import React from 'react'
+import React, {useContext, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import { Route, Link, Switch } from 'react-router-dom'
+import {AppStateContext} from "../App";
+import {fetchDestinations} from "./API";
+import {useAuth0} from "@auth0/auth0-react";
 
-const ListCountries = (props) => {
-    const { countries } = props;
+const ListDestinations = () => {
+    const {countryId, destinations, setDestinations} = useContext(AppStateContext);
+    const { getAccessTokenSilently } = useAuth0();
+
+     useEffect(  () => {
+         async function getData() {
+             const token = await getAccessTokenSilently();
+             if (countryId){
+                 const {destinations} = await fetchDestinations(token, countryId, setDestinations);
+                 setDestinations(destinations);
+             }
+
+         } getData()
+    }, []);
 
     return (
         <div>
-            <ol className='contact-list'>
-               {countries.map((country) => (
+            {destinations.length !== 0 && (
+                <ol className='contact-list'>
+               {destinations.map((country) => (
                 <li key={country.id} className='destination-list-item'>
                     <div
                         className='destination-avatar'
@@ -19,13 +35,14 @@ const ListCountries = (props) => {
                     <div className='destination-details'>
                         <Link to={`/countries/${country.id}` } > {country.name} </Link>
                     </div>
-                    <button
-                        onClick={() => props.onDeleteCountry(country.id)}
-                        className='destination-remove'
-                        >
-                        Remove
+                    {/*<button*/}
+                    {/*    onClick={() => props.onDeleteCountry(country.id)}*/}
+                    {/*    className='destination-remove'*/}
+                    {/*    >*/}
+                    {/*    Remove*/}
 
-                    </button>
+                    {/*</button>*/}
+
                     {/*<Switch>*/}
                     {/*<Route path={'/countries/:destination_id'} render-={() => (*/}
                     {/*    <button*/}
@@ -39,12 +56,14 @@ const ListCountries = (props) => {
                 </li>
               ))}
             </ol>
+            )}
+
         </div>
     );
 }
 
-ListCountries.propTypes = {
-    countries: PropTypes.array.isRequired,
+ListDestinations.propTypes = {
+    // destinations: PropTypes.array.isRequired,
     // onDeleteDestination: PropTypes.func.isRequired,
 }
-export default ListCountries
+export default ListDestinations

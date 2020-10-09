@@ -40,6 +40,11 @@ class Country(db.Model):
                                lazy='dynamic')
     users = db.relationship('User', backref='country')
 
+    def __init__(self, id, name, alias):
+        self.id = id
+        self.name = name
+        self.alias = alias #TODO change to country code
+
     def insert(self):
         db.session.add(self)
         db.session.commit()
@@ -78,10 +83,17 @@ class Country(db.Model):
 
 
 class User(db.Model):
-    id = db.Column(db.String(), primary_key=True)
+    __tablename__ = 'users'
+    user_id = db.Column(db.String(), primary_key=True)
     name = db.Column(db.String(80), unique=True)
     email = db.Column(db.String(80))
     country_id = db.Column(db.Integer, db.ForeignKey('country.id'))
+
+    def __init__(self, user_id, name, email, country_id):
+        self.user_id = user_id
+        self.name = name
+        self.email = email
+        self.country_id = country_id
 
     def insert(self):
         db.session.add(self)
@@ -97,10 +109,10 @@ class User(db.Model):
 
     def short(self):
         return {
-            'id': self.id,
+            'id': self.user_id,
             'name': self.name,
             'email': self.email,
-            'country id': self.country_id,
+            'country_id': self.country_id,
         }
 
     def __repr__(self):

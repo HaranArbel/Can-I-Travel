@@ -1,28 +1,31 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { fetchCountries} from "./API";
+import {addUser, fetchCountries} from "./API";
+import {AppStateContext} from "../App";
 
-export default function SelectCountry(props){
-    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
-    const { countryId, setCountryId, onSubmit } = props;
+export default function SelectCountry(){
+    const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
+    const {countryId, setCountryId, handleOnSubmit} = useContext(AppStateContext);
     const [countries, setCountries] = useState([]);
 
-     async function getData() {
-        const token = await getAccessTokenSilently();
-        const response = await fetchCountries(token);
-        setCountries(response.countries);
-    }
-
      useEffect(  () => {
-         getData()
+         let unmounted = false
+         async function getData() {
+             const token = await getAccessTokenSilently();
+             const {countries} = await fetchCountries(token);
+             if (!unmounted){
+                 setCountries(countries);
+             }
+         } getData()
+         return () => {unmounted = true}
     }, []);
 
     return (
         isAuthenticated && (
-        <form onSubmit={onSubmit}>
+        <form onSubmit={handleOnSubmit}>
             <label>
               Select your country:
-              <select value={countryId} onChange={(event) => setCountryId(event.target.value)}>
+              <select value={countryId} onChange={(event) => (setCountryId(event.target.value))}>
                   {countries.map(country => (
                       <option key={country.id} value={country.id}> {country.name} </option>
                   ))}
