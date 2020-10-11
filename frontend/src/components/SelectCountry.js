@@ -1,11 +1,12 @@
 import React, {useContext, useEffect, useState} from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import {addUser, fetchCountries} from "./API";
+import {fetchCountries} from "./API";
 import {AppStateContext} from "../App";
 
-export default function SelectCountry(){
-    const { isAuthenticated, user, getAccessTokenSilently } = useAuth0();
-    const {countryId, setCountryId, handleOnSubmit} = useContext(AppStateContext);
+export default function SelectCountry({onSubmit}){
+    const { isAuthenticated, getAccessTokenSilently } = useAuth0();
+    const {countryId, setCountryId} = useContext(AppStateContext);
+    // const [selectedCountryId, setSelectedCountryId] = useState('0');
     const [countries, setCountries] = useState([]);
 
      useEffect(  () => {
@@ -22,7 +23,7 @@ export default function SelectCountry(){
 
     return (
         isAuthenticated && (
-        <form onSubmit={handleOnSubmit}>
+        <form onSubmit={onSubmit}>
             <label>
               Select your country:
               <select value={countryId} onChange={(event) => (setCountryId(event.target.value))}>

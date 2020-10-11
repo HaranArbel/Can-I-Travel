@@ -535,6 +535,7 @@ AF.add_destination(AD)
 def add_user(payload):
     try:
         body = request.get_json()
+        print("bla")
         user_id = body.get('userId')
         name = body.get('name') #TODO remove email and name they are stored on Auth0? (If user changes their email)
         email = body.get('email')
@@ -546,7 +547,6 @@ def add_user(payload):
             user = User(user_id, name, email, country_id)
             user.insert()
         else:
-            print("user is Noneeeee")
             user.country_id = country_id
             user.update()
 
@@ -574,11 +574,11 @@ def get_country_for_user(payload, user_id):
     user = User.query.filter(User.user_id == user_id).first()
     if user is not None:
         return jsonify({
-            'country': user.country_id
+            'country_id': user.country_id
         })
     else:
         return jsonify({
-            'country': ''
+            'country_id': '' #todo empty ?
         })
 
 
@@ -586,8 +586,6 @@ def get_country_for_user(payload, user_id):
 @requires_auth('get:countries')
 def get_country(payload, country_id):
     country = Country.query.filter(Country.id == country_id).first()
-    for destination in country.destinations:
-        print("destination print:" + str(destination))
     return jsonify({
         'country': country.long()
     })
@@ -620,7 +618,7 @@ def add_destination(payload, country_id):
         country = Country.query.filter(Country.id == country_id).first()
         body = request.get_json()
         destination_id = body.get('destinationId')
-        print(destination_id)
+        print("destination id: " + destination_id)
         destination = Country.query.filter(Country.id == destination_id).first()
         if destination not in country.destinations:
             country.destinations.append(destination)

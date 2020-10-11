@@ -15,8 +15,9 @@ export const fetchDailyCasesByCountry = async (country) => {
     }
 };
 
-export const addUser = async (token, user, countryId) => {
+export const addUserCountryPreference = async (token, user, countryId) => {
 
+    console.log("countryId in addUserCountryPreference: " + countryId)
     try{
         const response = await fetch(`/users/add`, {
             method: 'POST',
@@ -63,7 +64,6 @@ export const fetchDestinations = async (token, countryId) => {
             },
         });
         const responseData = await response.json();
-        console.log("responseData: " + responseData)
         return responseData
 
     } catch (error) {

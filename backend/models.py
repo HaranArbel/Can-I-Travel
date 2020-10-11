@@ -62,7 +62,6 @@ class Country(db.Model):
     def update(self):
         db.session.commit()
 
-
     def short(self):
         return {
             'id': self.id,

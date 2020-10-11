@@ -6,19 +6,19 @@ import {fetchDestinations} from "./API";
 import {useAuth0} from "@auth0/auth0-react";
 
 const ListDestinations = () => {
-    const {countryId, destinations, setDestinations} = useContext(AppStateContext);
+    const {destinations} = useContext(AppStateContext);
     const { getAccessTokenSilently } = useAuth0();
 
-     useEffect(  () => {
-         async function getData() {
-             const token = await getAccessTokenSilently();
-             if (countryId){
-                 const {destinations} = await fetchDestinations(token, countryId, setDestinations);
-                 setDestinations(destinations);
-             }
-
-         } getData()
-    }, []);
+    //  useEffect(  () => {
+    //      async function getData() {
+    //          const token = await getAccessTokenSilently();
+    //          if (countryId){
+    //              const {destinations} = await fetchDestinations(token, countryId, setDestinations);
+    //              setDestinations(destinations);
+    //          }
+    //
+    //      } getData()
+    // }, [countryId]);
 
     return (
         <div>
@@ -26,12 +26,14 @@ const ListDestinations = () => {
                 <ol className='contact-list'>
                {destinations.map((country) => (
                 <li key={country.id} className='destination-list-item'>
-                    <div
+                    {country.alias !== '' && (
+                        <div
                         className='destination-avatar'
                         style={{
                         backgroundImage: `url(https://www.countryflags.io/${country.alias.toLowerCase()}/shiny/64.png)`
                         }}
                     ></div>
+                    )}
                     <div className='destination-details'>
                         <Link to={`/countries/${country.id}` } > {country.name} </Link>
                     </div>

@@ -4,14 +4,13 @@ import {deleteDestination, fetchCountries, fetchCountryInfo, fetchDailyCasesByCo
 import {useAuth0} from "@auth0/auth0-react";
 import ListDestinations from "./ListDestinations";
 import SelectCountry from "./SelectCountry";
-import { addDestination } from  './API'; //don't remove cause we will need this or something similar in the future
+import { addDestination } from  './API';
 import {AppStateContext} from "../App";
 
-export default function CountryPage(props){
+export default function CountryPage(){
     const { destination_id } = useParams();
-    const {destinations, setDestinations} = useContext(AppStateContext);
+    const { countryId, setDestinations } = useContext(AppStateContext);
     const { getAccessTokenSilently } = useAuth0();
-    const [selectedCountry, setSelectedCountry] = useState('1')
     const [country, setCountry] = useState({
         id: 0,
         name: '',
@@ -28,22 +27,21 @@ export default function CountryPage(props){
     //     setCountry(response.country);
     // }
 
-    // const handleOnSubmit = async (event) => {
-    //     event.preventDefault();
-    //     const token = await getAccessTokenSilently();
-    //     const {country} = await addDestination(token, country, selectedCountry);
-    //     setCountry(country);
-    // }
+    const addDestinationToCountry = async (event) => {
+        event.preventDefault();
+        const token = await getAccessTokenSilently();
+        const {fetched_country} = await addDestination(token, country, countryId);
+        setCountry(fetched_country);
+    }
 
      useEffect(  () => {
-         async function getData() {
+         async function getCountryData() {
              const token = await getAccessTokenSilently();
              const {country} = await fetchCountryInfo(token, destination_id)
              setCountry(country);
-             setDestinations(country.destinations)
         }
         async function getCOVIDInfo() {
-            if (country.alias){
+            if (country && country.alias){
                 const data = await fetchDailyCasesByCountry(country)
                 const arr = data.Countries.filter(d => d.CountryCode === country.alias);
                 setNewConfirmed(arr[0].NewConfirmed)
@@ -51,13 +49,18 @@ export default function CountryPage(props){
                 setNewRecovered(arr[0].NewRecovered)
             }
         }
-         getData()
+         getCountryData()
+         if (country){
+            setDestinations(country.destinations)
+         }
          getCOVIDInfo()
-    }, [country]);
+    }, [country, destination_id]);
 
     return (
         <div>
-            {(country.id !== 0 || !newConfirmed) && (<p>Loading...</p>)}
+        {country &&(
+            <div>
+            {(country.id === 0 || !newConfirmed) && (<p>Loading...</p>)}
             {country.id !== 0 && newConfirmed && (
                 <div>
                     <div
@@ -82,10 +85,12 @@ export default function CountryPage(props){
                         back
                     </Link>
                     <p>Add a new destination</p>
-                    <SelectCountry/> //todo add new destination used to be implemented on SelectCountry but now we put all the states in the Context. Also selected country was once the selected destination the user wanted to add, and it would send request to backend
+                    <SelectCountry onSubmit={addDestinationToCountry}/>
                 </div>
             )}
         </div>
+        ) }
+            </div>
     );
 
 };

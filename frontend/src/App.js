@@ -5,7 +5,7 @@ import serializeForm from 'form-serialize'
 import { useAuth0 } from "@auth0/auth0-react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Can from './components/Can';
-import {fetchDestinations, deleteDestination, addUser} from './components/API';
+import {fetchDestinations, deleteDestination, addUserCountryPreference} from './components/API';
 import CountryPage from "./components/CountryPage";
 import LoginPage from "./components/LoginPage";
 import SelectCountry from "./components/SelectCountry";
@@ -18,19 +18,11 @@ function App() {
     const history = useHistory()
     const { user, isLoading, isAuthenticated, getAccessTokenSilently } = useAuth0();
     const [destinations, setDestinations] = useState([]);
-    const [countryId, setCountryId] = useState(1); //string or number???????
-
-
-    const handleOnSubmit = async (event) => {
-        event.preventDefault();
-        const token = await getAccessTokenSilently();
-        const {new_user} = await addUser(token, user, countryId);
-        history.push('/')
-    }
+    const [countryId, setCountryId] = useState(0); //string or number???????
 
     return (
         <div>
-            <AppStateContext.Provider value={{countryId, setCountryId, setDestinations, destinations, user, handleOnSubmit}}>
+            <AppStateContext.Provider value={{countryId, setCountryId, setDestinations, destinations, user}}>
             <Route exact path='/' render={() => {
                 return(
                     !isAuthenticated ? <LoginPage/> : <UserPage/>
