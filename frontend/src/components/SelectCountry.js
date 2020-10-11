@@ -6,7 +6,6 @@ import {AppStateContext} from "../App";
 export default function SelectCountry({onSubmit}){
     const { isAuthenticated, getAccessTokenSilently } = useAuth0();
     const {countryId, setCountryId} = useContext(AppStateContext);
-    // const [selectedCountryId, setSelectedCountryId] = useState('0');
     const [countries, setCountries] = useState([]);
 
      useEffect(  () => {
@@ -19,7 +18,7 @@ export default function SelectCountry({onSubmit}){
              }
          } getData()
          return () => {unmounted = true}
-    }, []);
+    }, [getAccessTokenSilently]);
 
     return (
         isAuthenticated && (

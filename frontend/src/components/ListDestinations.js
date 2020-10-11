@@ -1,13 +1,9 @@
-import React, {useContext, useEffect} from 'react'
-import PropTypes from 'prop-types'
-import { Route, Link, Switch } from 'react-router-dom'
+import React, {useContext} from 'react'
+import { Link } from 'react-router-dom'
 import {AppStateContext} from "../App";
-import {fetchDestinations} from "./API";
-import {useAuth0} from "@auth0/auth0-react";
 
 const ListDestinations = () => {
     const {destinations} = useContext(AppStateContext);
-    const { getAccessTokenSilently } = useAuth0();
 
     //  useEffect(  () => {
     //      async function getData() {

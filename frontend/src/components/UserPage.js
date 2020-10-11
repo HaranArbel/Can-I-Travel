@@ -1,5 +1,4 @@
 import React, {useContext, useEffect, useState} from "react";
-import { Redirect } from "react-router-dom";
 import SelectCountry from "./SelectCountry";
 import ListDestinations from "./ListDestinations";
 import {addUserCountryPreference, fetchCountryOfUser, fetchDestinations} from "./API";
@@ -68,7 +67,7 @@ export default function UserPage(){
         //
         // }
         return () => {unmounted = true}
-    }, [countryId])
+    }, [countryId, getAccessTokenSilently, setCountryId, setDestinations, user.sub])
 
     return (
         (gotUserCountryPreference || userHasSubmittedPreference) ? <ListDestinations/> : <SelectCountry onSubmit={handleAddUserCountryPreference}/>

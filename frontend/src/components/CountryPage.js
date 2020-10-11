@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from "react";
-import { Route, Link, useParams } from "react-router-dom";
-import {deleteDestination, fetchCountries, fetchCountryInfo, fetchDailyCasesByCountry} from "./API";
+import { Link, useParams } from "react-router-dom";
+import { fetchCountryInfo, fetchDailyCasesByCountry } from "./API";
 import {useAuth0} from "@auth0/auth0-react";
 import ListDestinations from "./ListDestinations";
 import SelectCountry from "./SelectCountry";
@@ -35,6 +35,7 @@ export default function CountryPage(){
     }
 
      useEffect(  () => {
+         let unmounted = false
          async function getCountryData() {
              const token = await getAccessTokenSilently();
              const {country} = await fetchCountryInfo(token, destination_id)
@@ -49,12 +50,16 @@ export default function CountryPage(){
                 setNewRecovered(arr[0].NewRecovered)
             }
         }
-         getCountryData()
+        if (!unmounted){
+            getCountryData()
          if (country){
             setDestinations(country.destinations)
          }
          getCOVIDInfo()
-    }, [country, destination_id]);
+        }
+
+         return () => {unmounted = true}
+    }, [country, destination_id, getAccessTokenSilently,setDestinations]);
 
     return (
         <div>
