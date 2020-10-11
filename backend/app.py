@@ -626,7 +626,7 @@ def add_destination(payload, country_id):
 
         return jsonify({
             # 'success': True,
-            'country': country.long(),
+            'destinations': [destination.short() for destination in country.destinations],
         })
     except Exception as e:
         print(e)
@@ -647,7 +647,7 @@ def delete_destination(payload, country_id):
 
         return jsonify({
             # 'success': True,
-            'country': country.long(),
+            'destinations': [destination.short() for destination in country.destinations],
         })
     except Exception as e:
         print(e)

@@ -5,10 +5,10 @@ import {addUserCountryPreference, fetchCountryOfUser, fetchDestinations} from ".
 import {useAuth0} from "@auth0/auth0-react";
 import {AppStateContext} from "../App";
 
-export default function UserPage(){
+export default function UserPage() {
 
     const {countryId, setCountryId, setDestinations} = useContext(AppStateContext);
-    const { user, getAccessTokenSilently } = useAuth0();
+    const {user, getAccessTokenSilently} = useAuth0();
     const [gotDestinationsData, setGotDestinationsData] = useState(false)
     const [isLoaded, setIsLoaded] = useState(false)
     const [gotUserCountryReference, setGotUserCountryReference] = useState(false)
@@ -20,11 +20,11 @@ export default function UserPage(){
         setGotUserCountryReference(true)
     }
 
-    useEffect( () => {
+    useEffect(() => {
         const getUserCountryPreference = async () => {
             const token = await getAccessTokenSilently();
             const {country_id} = await fetchCountryOfUser(token, user.sub);
-            if (country_id){
+            if (country_id) {
                 setCountryId(country_id)
                 setGotUserCountryReference(true)
             }
@@ -33,20 +33,22 @@ export default function UserPage(){
         getUserCountryPreference() //can't await cause useEffect is not an async function
     }, [])
 
-    useEffect( () => {
+    useEffect(() => {
         async function getDestinations() {
             const token = await getAccessTokenSilently();
             const {destinations} = await fetchDestinations(token, countryId, setDestinations);
             setDestinations(destinations);
         }
-        if (gotUserCountryReference === true){
+
+        if (gotUserCountryReference === true) {
             getDestinations()
             setGotDestinationsData(true)
         }
     }, [gotUserCountryReference])
 
     return (
-        isLoaded ? (gotDestinationsData? <ListDestinations/> : <SelectCountry onSubmit={handleAddUserCountryPreference}/>) : <p>Loading...</p>
+        isLoaded ? (gotDestinationsData ? <ListDestinations showDeleteButton={false}/> :
+            <SelectCountry onSubmit={handleAddUserCountryPreference}/>) : <p>Loading...</p>
     );
 };
 
