@@ -7,71 +7,46 @@ import {AppStateContext} from "../App";
 
 export default function UserPage(){
 
-    const {countryId, setCountryId, destinations, setDestinations} = useContext(AppStateContext);
+    const {countryId, setCountryId, setDestinations} = useContext(AppStateContext);
     const { user, getAccessTokenSilently } = useAuth0();
-    const [userHasSubmittedPreference, setUserHasSubmittedPreference] = useState(false)
-    const [gotUserCountryPreference, setGotUserCountryPreference] = useState(false)
+    const [gotDestinationsData, setGotDestinationsData] = useState(false)
+    const [isLoaded, setIsLoaded] = useState(false)
+    const [gotUserCountryReference, setGotUserCountryReference] = useState(false)
 
     const handleAddUserCountryPreference = async (event) => {
         event.preventDefault();
         const token = await getAccessTokenSilently();
         const {new_user} = await addUserCountryPreference(token, user, countryId);
-        setUserHasSubmittedPreference(true)
-        // history.push('/')
+        setGotUserCountryReference(true)
     }
 
-    useEffect(() => {
-        let unmounted = false
+    useEffect( () => {
         const getUserCountryPreference = async () => {
             const token = await getAccessTokenSilently();
             const {country_id} = await fetchCountryOfUser(token, user.sub);
-            if (!unmounted){
-                if (country_id){
-                    console.log('country_id: ', country_id)
-                    setCountryId(country_id)
-                    setGotUserCountryPreference(true)
-                }
-                else{
-                    console.log(" cannot get user id :( ")
-                }
+            if (country_id){
+                setCountryId(country_id)
+                setGotUserCountryReference(true)
             }
-            setGotUserCountryPreference(true)
+            setIsLoaded(true)
         }
+        getUserCountryPreference() //can't await cause useEffect is not an async function
+    }, [])
+
+    useEffect( () => {
         async function getDestinations() {
             const token = await getAccessTokenSilently();
-            if (countryId !== 0){
-                const {destinations} = await fetchDestinations(token, countryId, setDestinations);
-                 setDestinations(destinations);
-                 console.log("got destinations for: " + countryId + ". ")
-
-            }
-
-            //
-            //      console.log("got destinations for: " + countryId + ". ")
-            //
-            // if (gotUserCountryPreference || userHasSubmittedPreference){
-            //     const token = await getAccessTokenSilently();
-            //      const {destinations} = await fetchDestinations(token, countryId, setDestinations);
-            //      setDestinations(destinations);
-            //      console.log("got destinations for: " + countryId + ". ")
-            // }
-            // else{
-            //     console.log("didn't get anu destinations ??? ")
-            // }
-
-
-         }
-        getUserCountryPreference()
-        getDestinations()
-        // if (userHasSubmittedPreference || gotUserCountryPreference){
-        //
-        // }
-        return () => {unmounted = true}
-    }, [countryId, getAccessTokenSilently, setCountryId, setDestinations, user.sub])
+            const {destinations} = await fetchDestinations(token, countryId, setDestinations);
+            setDestinations(destinations);
+        }
+        if (gotUserCountryReference === true){
+            getDestinations()
+            setGotDestinationsData(true)
+        }
+    }, [gotUserCountryReference])
 
     return (
-        (gotUserCountryPreference || userHasSubmittedPreference) ? <ListDestinations/> : <SelectCountry onSubmit={handleAddUserCountryPreference}/>
-        // countryId === '' ? <Redirect to='/select-country'/> : <ListDestinations/>
+        isLoaded ? (gotDestinationsData? <ListDestinations/> : <SelectCountry onSubmit={handleAddUserCountryPreference}/>) : <p>Loading...</p>
     );
 };
 

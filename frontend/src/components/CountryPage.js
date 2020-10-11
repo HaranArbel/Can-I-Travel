@@ -91,6 +91,7 @@ export default function CountryPage(){
                     </Link>
                     <p>Add a new destination</p>
                     <SelectCountry onSubmit={addDestinationToCountry}/>
+
                 </div>
             )}
         </div>

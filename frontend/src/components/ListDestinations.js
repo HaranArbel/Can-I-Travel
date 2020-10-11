@@ -1,8 +1,8 @@
 import React, {useContext} from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom'
 import {AppStateContext} from "../App";
 
-const ListDestinations = () => {
+const ListDestinations = (props) => {
     const {destinations} = useContext(AppStateContext);
 
     //  useEffect(  () => {
@@ -44,7 +44,7 @@ const ListDestinations = () => {
                     {/*<Switch>*/}
                     {/*<Route path={'/countries/:destination_id'} render-={() => (*/}
                     {/*    <button*/}
-                    {/*    onClick={() => props.onDeleteCountry(country.id)}*/}
+                    {/*    onClick={() => props.handleOnDeleteDestination(country.id)}*/}
                     {/*    className='destination-remove'*/}
                     {/*    >*/}
                     {/*    Remove*/}

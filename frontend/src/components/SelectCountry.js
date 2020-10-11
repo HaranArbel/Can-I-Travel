@@ -9,15 +9,12 @@ export default function SelectCountry({onSubmit}){
     const [countries, setCountries] = useState([]);
 
      useEffect(  () => {
-         let unmounted = false
          async function getData() {
              const token = await getAccessTokenSilently();
              const {countries} = await fetchCountries(token);
-             if (!unmounted){
-                 setCountries(countries);
-             }
-         } getData()
-         return () => {unmounted = true}
+             setCountries(countries);
+         }
+         getData()
     }, [getAccessTokenSilently]);
 
     return (
