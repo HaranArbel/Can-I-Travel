@@ -17,9 +17,10 @@ ReactDOM.render(
           clientId={clientId}
           redirectUri={window.location.origin}
           audience='myApi'
-    >
-    <App />
-    </Auth0Provider>
+          callbackUrl='http://localhost:3000/callback'
+      >
+          <App />
+      </Auth0Provider>
   </BrowserRouter>, document.getElementById('root')
 
 );
@@ -32,4 +33,4 @@ serviceWorker.unregister();
 
 // domain="dev-j7mi52gx.eu.auth0.com"
     // clientId="ZZlb6ph1nmJIjdFtk5kDShQ1UiP3bAcZ"
-    // redirectUri="http://localhost:3000"
+    // redirectUri="https://localhost:3000"

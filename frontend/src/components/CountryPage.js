@@ -1,47 +1,72 @@
-import React, {useState, useEffect} from "react";
-import { Route, Link, useParams } from "react-router-dom";
-import {fetchCountries, fetchCountryInfo} from "./API";
+import React, {useState, useEffect, useContext} from "react";
+import {Link, useParams} from "react-router-dom";
+import {fetchCountryInfo} from "./API";
 import {useAuth0} from "@auth0/auth0-react";
+import ListDestinations from "./ListDestinations";
 import SelectCountry from "./SelectCountry";
+import {addDestination, deleteDestination} from './API';
+import {AppStateContext} from "../App";
+import CovidCaseData from "./CovidCaseData";
 
-export default function CountryPage(props){
-    const { destination_id } = useParams();
-    // const { getAccessTokenSilently } = useAuth0();
-    const [country, setCountry] = useState({
-        'id': 0,
-        'name': '',
-        'alias': '',
-        'destinations': [],
-    });
+export default function CountryPage() {
+    const {destination_id} = useParams();
+    const {countryId, setDestinations, selectedCountryId, setSelectedCountryId} = useContext(AppStateContext);
+    const {getAccessTokenSilently} = useAuth0();
+    const [country, setCountry] = useState(null);
 
-    useEffect( async () => {
-         // const token = await getAccessTokenSilently()
-         const response = fetchCountryInfo(destination_id, setCountry)
-    }, [])
+    const handleOnDeleteDestination = async (destinationId) => {
+        const token = await getAccessTokenSilently();
+        const {destinations} = await deleteDestination(token, country, destinationId);
+        setDestinations(destinations);
+    }
+
+    const addDestinationToCountry = async (event) => {
+        event.preventDefault();
+        const token = await getAccessTokenSilently();
+        const {destinations} = await addDestination(token, country, selectedCountryId);
+        setDestinations(destinations)
+    }
+
+    useEffect(() => {
+        async function getCountryData() {
+            const token = await getAccessTokenSilently();
+            const {country} = await fetchCountryInfo(token, destination_id)
+            setCountry(country);
+            setDestinations(country.destinations)
+        }
+        getCountryData()
+    }, [destination_id, getAccessTokenSilently, setDestinations]);
 
     return (
-        <div>
-            <div
-                className='destination-avatar'
-                style={{
-                  backgroundImage: `url(https://www.countryflags.io/${country.alias.toLowerCase()}/shiny/64.png)`
-                }}
-            >
+        !country ? (<p>Loading...</p>) : (
+            <div>
+                <div>
+                    <div
+                        className='destination-avatar'
+                        style={{
+                            backgroundImage: `url(https://www.countryflags.io/${country.alias.toLowerCase()}/shiny/64.png)`
+                        }}
+                    >
+                    </div>
+                    <div className='destination-details'>
+                        <h2>{country.name}</h2>
+                        <h3>{country.alias}</h3>
+                        <CovidCaseData country={country}/>
+                        <h3>Who can enter {country.name}?</h3>
+                        <ListDestinations
+                            showDeleteButton={true}
+                            onDelete={handleOnDeleteDestination}/>
+                    </div>
+                    <Link
+                        to='/'
+                        className='close-add-destination'>
+                        back
+                    </Link>
+                    <p>Add a new destination</p>
+                    <SelectCountry onSubmit={addDestinationToCountry}/>
+                </div>
             </div>
-            <div className='destination-details'>
-                <h2>{country.name}</h2>
-            </div>
-
-            <Link
-                to='/'
-                className='close-create-destination'> //todo change classname
-                back
-            </Link>
-            <p>add a new destination</p>
-            {/*<SelectCountry/>*/}
-            {/*<Link to='/create_destination'> add new destination </Link>*/}
-            {/*<Route exact path='create_destination'></Route>*/}
-        </div>
+        )
     );
 
 };
