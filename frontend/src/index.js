@@ -17,6 +17,7 @@ ReactDOM.render(
           clientId={clientId}
           redirectUri={window.location.origin}
           audience='myApi'
+          callbackUrl='http://localhost:3000/callback'
       >
           <App />
       </Auth0Provider>

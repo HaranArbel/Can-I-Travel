@@ -3,12 +3,11 @@ from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 import json
 
-from auth import requires_auth #,AuthError
+from auth import requires_auth  # ,AuthError
 import re
 # def create_app(test_config=None):
 # create and configure the app
 from models import setup_db, Country, User
-
 
 app = Flask(__name__)
 setup_db(app)
@@ -498,12 +497,10 @@ ZA.insert()
 ZM.insert()
 ZW.insert()
 
-
 AD.add_destination(AF)
 AD.add_destination(AM)
 
 AM.add_destination(AQ)
-
 
 AN.add_destination(AU)
 
@@ -524,20 +521,20 @@ AR.add_destination(AU)
 
 AF.add_destination(AD)
 
-#-------------------------------------------- Fake Data --------------------------------
+
+# -------------------------------------------- Fake Data --------------------------------
 
 
-#----------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------
 # todo: think about scenario when user changes their location. they're already in the table and we do a POST, which will fail.
 
 @app.route('/users/add', methods=['POST'])
-@requires_auth('get:countries')
+@requires_auth('post:user_preference')
 def add_user(payload):
     try:
         body = request.get_json()
-        print("bla")
         user_id = body.get('userId')
-        name = body.get('name') #TODO remove email and name they are stored on Auth0? (If user changes their email)
+        name = body.get('name')  # TODO remove email and name they are stored on Auth0? (If user changes their email)
         email = body.get('email')
         country_id = body.get('countryId')
         if country_id == '':
@@ -562,14 +559,13 @@ def add_user(payload):
 @requires_auth('get:countries')
 def get_countries(payload):
     countries = Country.query.all()
-    # print([country.short() for country in countries])
     return jsonify({
         'countries': [country.short() for country in countries]
     })
 
 
 @app.route('/users/<string:user_id>')
-@requires_auth('get:countries')
+@requires_auth('get:user')
 def get_country_for_user(payload, user_id):
     user = User.query.filter(User.user_id == user_id).first()
     if user is not None:
@@ -578,7 +574,7 @@ def get_country_for_user(payload, user_id):
         })
     else:
         return jsonify({
-            'country_id': '' #todo empty ?
+            'country_id': ''  # todo empty ?
         })
 
 
@@ -592,7 +588,7 @@ def get_country(payload, country_id):
 
 
 @app.route('/countries/<int:country_id>/destinations')
-@requires_auth('get:countries') #todo change to get:destinations or something
+@requires_auth('get:destinations')
 def get_destinations(payload, country_id):
     country = Country.query.filter(Country.id == country_id).first()
     print("getting destinations for country: " + country.name)
@@ -611,21 +607,18 @@ def get_destinations(payload, country_id):
 
 
 @app.route('/countries/<int:country_id>/add_destination', methods=['PATCH'])
-@requires_auth('get:countries')
+@requires_auth('post:destination')
 def add_destination(payload, country_id):
-
     try:
         country = Country.query.filter(Country.id == country_id).first()
         body = request.get_json()
         destination_id = body.get('destinationId')
-        print("destination id: " + destination_id)
         destination = Country.query.filter(Country.id == destination_id).first()
-        if destination not in country.destinations:
+        if destination not in country.destinations and destination.id != country_id:
             country.destinations.append(destination)
         country.update()
 
         return jsonify({
-            # 'success': True,
             'destinations': [destination.short() for destination in country.destinations],
         })
     except Exception as e:
@@ -633,9 +626,8 @@ def add_destination(payload, country_id):
 
 
 @app.route('/countries/<int:country_id>/delete_destination', methods=['DELETE'])
-@requires_auth('get:countries')
+@requires_auth('delete:destination')
 def delete_destination(payload, country_id):
-
     try:
         country = Country.query.filter(Country.id == country_id).first()
         body = request.get_json()
@@ -646,17 +638,7 @@ def delete_destination(payload, country_id):
         country.update()
 
         return jsonify({
-            # 'success': True,
             'destinations': [destination.short() for destination in country.destinations],
         })
     except Exception as e:
         print(e)
-
-
-#   return app
-#
-# APP = create_app()
-#
-# if __name__ == '__main__':
-#     APP.run(debug=True)
-#     # host='0.0.0.0', port=8080,

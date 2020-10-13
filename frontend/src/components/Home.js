@@ -4,10 +4,10 @@ import SelectCountry from "./SelectCountry";
 import ListDestinations from "./ListDestinations";
 import Profile from "./Profile";
 
-const Home = ({ isLoading, user, isAuthenticated, countryId, setCountryId, handleOnSubmit, destinations}) => {
+const Home = ({isLoading, user, isAuthenticated, countryId, setCountryId, handleOnSubmit, destinations}) => {
 
-  return (
-      <div>
+    return (
+        <div>
             {/*{isAuthenticated && (<Profile user={user}/>)}*/}
             {isLoading && (<div>Loading...</div>)}
             {/*{!isAuthenticated && R}*/}
@@ -20,8 +20,8 @@ const Home = ({ isLoading, user, isAuthenticated, countryId, setCountryId, handl
             <ListDestinations
                 countries={destinations}
             />
-      </div>
-  );
+        </div>
+    );
 };
 
 export default Home;

@@ -10,7 +10,7 @@ import CovidCaseData from "./CovidCaseData";
 
 export default function CountryPage() {
     const {destination_id} = useParams();
-    const {countryId, setDestinations} = useContext(AppStateContext);
+    const {countryId, setDestinations, selectedCountryId, setSelectedCountryId} = useContext(AppStateContext);
     const {getAccessTokenSilently} = useAuth0();
     const [country, setCountry] = useState(null);
 
@@ -23,7 +23,7 @@ export default function CountryPage() {
     const addDestinationToCountry = async (event) => {
         event.preventDefault();
         const token = await getAccessTokenSilently();
-        const {destinations} = await addDestination(token, country, countryId);
+        const {destinations} = await addDestination(token, country, selectedCountryId);
         setDestinations(destinations)
     }
 

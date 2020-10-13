@@ -13,12 +13,13 @@ export default function UserPage() {
     const [isLoaded, setIsLoaded] = useState(false)
     const [gotUserCountryReference, setGotUserCountryReference] = useState(false)
 
-    const handleAddUserCountryPreference = async (event) => {
-        event.preventDefault();
-        const token = await getAccessTokenSilently();
-        const {new_user} = await addUserCountryPreference(token, user, countryId);
-        setGotUserCountryReference(true)
-    }
+    // const handleAddUserCountryPreference = async (event) => {
+    //     event.preventDefault();
+    //     const token = await getAccessTokenSilently();
+    //     const {new_user} = await addUserCountryPreference(token, user, countryId);
+    //     // setGotUserCountryReference(true)
+    //     // setCountryId(selectedCountryId)
+    // }
 
     useEffect(() => {
         const getUserCountryPreference = async () => {
@@ -26,7 +27,7 @@ export default function UserPage() {
             const {country_id} = await fetchCountryOfUser(token, user.sub);
             if (country_id) {
                 setCountryId(country_id)
-                setGotUserCountryReference(true)
+                // setGotUserCountryReference(true)
             }
             setIsLoaded(true)
         }
@@ -40,15 +41,19 @@ export default function UserPage() {
             setDestinations(destinations);
         }
 
-        if (gotUserCountryReference === true) {
+        if (countryId) {
             getDestinations()
             setGotDestinationsData(true)
         }
-    }, [gotUserCountryReference])
+    }, [countryId])
 
     return (
-        isLoaded ? (gotDestinationsData ? <ListDestinations showDeleteButton={false}/> :
-            <SelectCountry onSubmit={handleAddUserCountryPreference}/>) : <p>Loading...</p>
+        <div>
+            {isLoaded ? <SelectCountry/> : <p>Loading...</p>}
+            {gotDestinationsData ? <ListDestinations showDeleteButton={false}/> : (null)}
+        </div>
+        // isLoaded ? (gotDestinationsData ? <ListDestinations showDeleteButton={false}/> :
+        //     <SelectCountry onSubmit={handleAddUserCountryPreference}/>) : <p>Loading...</p>
     );
 };
 

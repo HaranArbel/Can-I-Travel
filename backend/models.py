@@ -14,6 +14,8 @@ db = SQLAlchemy()
 setup_db(app)
     binds a flask application and a SQLAlchemy service
 '''
+
+
 def setup_db(app):
     app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
@@ -23,9 +25,9 @@ def setup_db(app):
 
 
 origins = db.Table('origins',
-    db.Column('origin_id', db.Integer, db.ForeignKey('country.id')),
-    db.Column('destination_id', db.Integer, db.ForeignKey('country.id'))
-)
+                   db.Column('origin_id', db.Integer, db.ForeignKey('country.id')),
+                   db.Column('destination_id', db.Integer, db.ForeignKey('country.id'))
+                   )
 
 
 class Country(db.Model):
@@ -33,17 +35,17 @@ class Country(db.Model):
     name = db.Column(db.String(80), unique=True)
     alias = db.Column(db.String(10))
     destinations = db.relationship('Country',
-                               secondary=origins,
-                               primaryjoin=(origins.c.origin_id == id),
-                               secondaryjoin=(origins.c.destination_id == id),
-                               backref=db.backref('origins', lazy='dynamic'),
-                               lazy='dynamic')
+                                   secondary=origins,
+                                   primaryjoin=(origins.c.origin_id == id),
+                                   secondaryjoin=(origins.c.destination_id == id),
+                                   backref=db.backref('origins', lazy='dynamic'),
+                                   lazy='dynamic')
     users = db.relationship('User', backref='country')
 
     def __init__(self, id, name, alias):
         self.id = id
         self.name = name
-        self.alias = alias #TODO change to country code
+        self.alias = alias  # TODO change to country code
 
     def insert(self):
         db.session.add(self)
@@ -59,6 +61,7 @@ class Country(db.Model):
             updates a new model into a database
             the model must exist in the database
     '''
+
     def update(self):
         db.session.commit()
 
@@ -103,6 +106,7 @@ class User(db.Model):
             updates a new model into a database
             the model must exist in the database
     '''
+
     def update(self):
         db.session.commit()
 
@@ -124,9 +128,8 @@ db_drop_and_create_all()
     can be used to initialize a clean database
     !!NOTE you can change the database_filename variable to have multiple verisons of a database
 '''
+
+
 def db_drop_and_create_all():
     db.drop_all()
     db.create_all()
-
-
-

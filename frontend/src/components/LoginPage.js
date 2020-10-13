@@ -1,12 +1,12 @@
 import React from "react";
 import LoginButton from "./LoginButton";
 
-export default function LoginPage(){
+export default function LoginPage() {
 
-  return (
-      <div>
+    return (
+        <div>
             <p>Please log in</p>
-            <LoginButton />
-      </div>
-  );
+            <LoginButton/>
+        </div>
+    );
 };
