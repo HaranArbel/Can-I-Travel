@@ -1,9 +1,10 @@
 import React, {useContext} from 'react'
-import {Link, Route} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import {AppStateContext} from "../App";
+import Can from "./Can";
 
 const ListDestinations = ({showDeleteButton, onDelete}) => {
-    const {destinations} = useContext(AppStateContext);
+    const {userRole, destinations} = useContext(AppStateContext);
 
     return (
         <div>
@@ -23,12 +24,19 @@ const ListDestinations = ({showDeleteButton, onDelete}) => {
                                 <Link to={`/countries/${country.id}`}> {country.name} </Link>
                             </div>
                             {showDeleteButton && (
-                                <button
-                                    onClick={() => onDelete(country.id)}
-                                    className='destination-remove'
-                                >
-                                    Remove
-                                </button>
+                                <Can
+                                    role={userRole}
+                                    perform="delete:destination"
+                                    yes={() => (
+                                        <button
+                                            onClick={() => onDelete(country.id)}
+                                            className='destination-remove'
+                                        >
+                                            Remove
+                                        </button>
+                                    )}
+                                    no={() => (null)}
+                                />
                             )}
                         </li>
                     ))}

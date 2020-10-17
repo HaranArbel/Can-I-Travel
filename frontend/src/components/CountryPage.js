@@ -7,10 +7,11 @@ import SelectCountry from "./SelectCountry";
 import {addDestination, deleteDestination} from './API';
 import {AppStateContext} from "../App";
 import CovidCaseData from "./CovidCaseData";
+import Can from "./Can";
 
 export default function CountryPage() {
     const {destination_id} = useParams();
-    const {countryId, setDestinations, selectedCountryId, setSelectedCountryId} = useContext(AppStateContext);
+    const {userRole, countryId, setDestinations, selectedCountryId, setSelectedCountryId} = useContext(AppStateContext);
     const {getAccessTokenSilently} = useAuth0();
     const [country, setCountry] = useState(null);
 
@@ -34,6 +35,7 @@ export default function CountryPage() {
             setCountry(country);
             setDestinations(country.destinations)
         }
+
         getCountryData()
     }, [destination_id, getAccessTokenSilently, setDestinations]);
 
@@ -62,8 +64,18 @@ export default function CountryPage() {
                         className='close-add-destination'>
                         back
                     </Link>
-                    <p>Add a new destination</p>
-                    <SelectCountry onSubmit={addDestinationToCountry}/>
+                    <Can
+                        role={userRole}
+                        perform="post:destination"
+                        yes={() => (
+                            <div>
+                                <p>Add a new destination</p>
+                                <SelectCountry onSubmit={addDestinationToCountry}/>
+                            </div>
+                        )}
+                        no={()=>(null)}
+                    />
+
                 </div>
             </div>
         )

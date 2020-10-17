@@ -36,7 +36,6 @@ export default function SelectCountry({onSubmit}) {
         isAuthenticated && (
             <form onSubmit={onSubmit || handleOnSubmit}>
                 <label>
-                    Select your country:
                     <select value={selectedCountryId} onChange={(event) => (setSelectedCountryId(event.target.value))}>
                         {countries.map(country => (
                             <option key={country.id} value={country.id}> {country.name} </option>

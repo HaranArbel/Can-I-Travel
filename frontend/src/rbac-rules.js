@@ -18,7 +18,7 @@ const rules = {
   //   }
   // },
   admin: {
-    static: ["edit:country", "get:countries", "create:country",
+    static: ["delete:destination", "get:countries", "get:destinations", "get:user", "get:user_role", "post:destination", "post:user_preference"
     ]
   }
 };

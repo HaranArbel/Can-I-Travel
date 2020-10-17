@@ -49,8 +49,17 @@ export default function UserPage() {
 
     return (
         <div>
-            {isLoaded ? <SelectCountry/> : <p>Loading...</p>}
-            {gotDestinationsData ? <ListDestinations showDeleteButton={false}/> : (null)}
+            {isLoaded ?
+            <div>
+                <p>Select your country:</p>
+                <SelectCountry/>
+            </div>
+                 :
+                <p>Loading...</p>}
+            {gotDestinationsData ?
+                <ListDestinations showDeleteButton={false}/>
+                :
+                (null)}
         </div>
         // isLoaded ? (gotDestinationsData ? <ListDestinations showDeleteButton={false}/> :
         //     <SelectCountry onSubmit={handleAddUserCountryPreference}/>) : <p>Loading...</p>

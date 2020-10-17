@@ -1,4 +1,21 @@
 
+export const fetchUserRole = async (token, user_id) => {
+
+    try {
+        const response = await fetch(`/users/${user_id}/role`, {
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${token}`,
+            },
+        });
+        const responseData = await response.json();
+        return responseData
+
+    } catch (error) {
+      console.log(error.message);
+    }
+};
+
 export const fetchDailyCasesByCountry = async (country) => {
 
     try {
@@ -54,7 +71,6 @@ export const fetchCountryOfUser = async (token, user_id) => {
 export const fetchDestinations = async (token, countryId) => {
     try {
         // const token = localStorage.getItem('token')
-        console.log("fetching destinations from " + `countries/${countryId}/destinations`)
         const response = await fetch(`countries/${countryId}/destinations`, {
             headers: {
                 Accept: 'application/json',

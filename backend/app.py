@@ -528,6 +528,16 @@ AF.add_destination(AD)
 # ----------------------------------------------------------------------------------
 # todo: think about scenario when user changes their location. they're already in the table and we do a POST, which will fail.
 
+
+@app.route('/users/<string:user_id>/role')
+@requires_auth('get:user_role')
+def get_user_role(payload, user_id):
+    role = payload["http://demozero.net/roles"][0]
+    return jsonify({
+        'role': role
+    })
+
+
 @app.route('/users/add', methods=['POST'])
 @requires_auth('post:user_preference')
 def add_user(payload):
