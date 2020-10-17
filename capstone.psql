@@ -1,0 +1,503 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 12.4
+-- Dumped by pg_dump version 12.4
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: country; Type: TABLE; Schema: public; Owner: haranarbel
+--
+
+CREATE TABLE public.country (
+    id integer NOT NULL,
+    name character varying(80),
+    alias character varying(10)
+);
+
+
+ALTER TABLE public.country OWNER TO haranarbel;
+
+--
+-- Name: country_id_seq; Type: SEQUENCE; Schema: public; Owner: haranarbel
+--
+
+CREATE SEQUENCE public.country_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.country_id_seq OWNER TO haranarbel;
+
+--
+-- Name: country_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: haranarbel
+--
+
+ALTER SEQUENCE public.country_id_seq OWNED BY public.country.id;
+
+
+--
+-- Name: origins; Type: TABLE; Schema: public; Owner: haranarbel
+--
+
+CREATE TABLE public.origins (
+    origin_id integer,
+    destination_id integer
+);
+
+
+ALTER TABLE public.origins OWNER TO haranarbel;
+
+--
+-- Name: users; Type: TABLE; Schema: public; Owner: haranarbel
+--
+
+CREATE TABLE public.users (
+    user_id character varying NOT NULL,
+    name character varying(80),
+    email character varying(80),
+    country_id integer
+);
+
+
+ALTER TABLE public.users OWNER TO haranarbel;
+
+--
+-- Name: country id; Type: DEFAULT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.country ALTER COLUMN id SET DEFAULT nextval('public.country_id_seq'::regclass);
+
+
+--
+-- Data for Name: country; Type: TABLE DATA; Schema: public; Owner: haranarbel
+--
+
+COPY public.country (id, name, alias) FROM stdin;
+1	Andorra	AD
+2	United Arab Emirates	AE
+3	Afghanistan	AF
+4	Antigua and Barbuda	AG
+5	Anguilla	AI
+6	Albania	AL
+7	Armenia	AM
+8	Netherlands Antilles	AN
+9	Angola	AO
+10	Antarctica	AQ
+11	Argentina	AR
+12	American Samoa	AS
+13	Austria	AT
+14	Australia	AU
+15	Aruba	AW
+16	Åland Islands	AX
+17	Azerbaijan	AZ
+18	Bosnia and Herzegovina	BA
+19	Barbados	BB
+20	Bangladesh	BD
+21	Belgium	BE
+22	Burkina Faso	BF
+23	Bulgaria	BG
+24	Bahrain	BH
+25	Bonaire, Sint Eustatius and Saba	BQ
+26	Brazil	BR
+27	Bahamas	BS
+28	Bhutan	BT
+29	Bouvet Island	BV
+30	Botswana	BW
+31	Belarus	BY
+32	Belize	BZ
+33	Canada	CA
+34	Cocos (Keeling) Islands	CC
+35	Central African Republic	CF
+36	Congo	CG
+37	Switzerland	CH
+38	Côte D'Ivoire	CI
+44	Costa Rica	CR
+45	Cuba	CU
+46	Cape Verde	CV
+47	Curaçao	CW
+48	Christmas Island	CX
+49	Cyprus	CY
+50	Czech Republic	CZ
+51	Germany	DE
+52	Djibouti	DJ
+53	Denmark	DK
+54	Dominica	DM
+55	Dominican Republic	DO
+56	Algeria	DZ
+57	Ecuador	EC
+58	Estonia	EE
+59	Egypt	EG
+60	Western Sahara	EH
+61	Eritrea	ER
+62	Spain	ES
+63	Ethiopia	ET
+64	EU	EU
+65	Finland	FI
+66	Fiji	FJ
+67	Falkland Islands (Malvinas)	FK
+68	Micronesia	FM
+69	Faroe Islands	FO
+70	France	FR
+71	Gabon	GA
+72	United Kingdom	GB
+73	Grenada	GD
+74	Georgia	GE
+75	French Guiana	GF
+76	Guernsey	GG
+77	Ghana	GH
+78	Gibraltar	GI
+79	Greenland	GL
+80	Gambia	GM
+81	Guinea	GN
+82	Guadeloupe	GP
+83	Equatorial Guinea	GQ
+84	Greece	GR
+85	South Georgia and the South Sandwich Islands	GS
+86	Guatemala	GT
+87	Guam	GU
+88	Guinea-Bissau	GW
+89	Guyana	GY
+90	Hong Kong	HK
+91	Heard and McDonald Islands	HM
+92	Honduras	HN
+93	Croatia	HR
+94	Haiti	HT
+95	Hungary	HU
+96	Indonesia	ID
+97	Ireland	IE
+98	Israel	IL
+99	Isle of Man	IM
+100	India	IN
+101	Iraq	IQ
+102	Iran	IR
+103	Iceland	IS
+104	Italy	IT
+105	Jersey	JE
+106	Jamaica	JM
+107	Jordan	JO
+108	Japan	JP
+109	Kenya	KE
+110	Kyrgyzstan	KG
+111	Cambodia	KH
+112	Kiribati	KI
+113	Comoros	KM
+114	Saint Kitts And Nevis	KN
+115	North Korea	KP
+116	South Korea	KR
+117	Kuwait	KW
+118	Cayman Islands	KY
+119	Kazakhstan	KZ
+120	Lao People's Democratic Republic	LA
+121	Lebanon	LB
+122	Saint Lucia	LC
+123	Liechtenstein	LI
+124	Sri Lanka	LK
+125	Liberia	LR
+126	Lesotho	LS
+127	Lithuania	LT
+128	Luxembourg	LU
+129	Latvia	LV
+130	Libya	LY
+131	Morocco	MA
+132	Monaco	MC
+133	Moldova	MD
+134	Montenegro	ME
+135	Saint Martin	MF
+136	Madagascar	MG
+137	Marshall Islands	MH
+138	Macedonia	MK
+139	Mali	ML
+140	Myanmar	MM
+141	Mongolia	MN
+142	Macao	MO
+143	Northern Mariana Islands	MP
+144	Martinique	MQ
+145	Mauritania	MR
+146	Montserrat	MS
+147	Malta	MT
+148	Mauritius	MU
+149	Maldives	MV
+150	Malawi	MW
+151	Mexico	MX
+152	Malaysia	MY
+153	Mozambique	MZ
+154	Namibia	NA
+155	New Caledonia	NC
+156	Niger	NE
+157	Norfolk Island	NF
+158	Nigeria	NG
+159	Nicaragua	NI
+160	Netherlands	NL
+161	Norway	NO
+162	Nepal	NP
+163	Nauru	NR
+164	Niue	NU
+165	New Zealand	NZ
+166	Oman	OM
+167	Panama	PA
+168	Peru	PE
+169	French Polynesia	PF
+170	Papua New Guinea	PG
+171	Philippines	PH
+172	Pakistan	PK
+173	Poland	PL
+174	Saint Pierre And Miquelon	PM
+175	Pitcairn	PN
+176	Puerto Rico	PR
+177	Palestine	PS
+178	Portugal	PT
+179	Palau	PW
+180	Paraguay	PY
+181	Qatar	QA
+182	Réunion	RE
+183	Romania	RO
+184	Serbia	RS
+185	Russia	RU
+186	Rwanda	RW
+187	Saudi Arabia	SA
+188	Solomon Islands	SB
+189	Seychelles	SC
+190	Sudan	SD
+191	Sweden	SE
+192	Singapore	SG
+193	Saint Helena	SH
+194	Slovenia	SI
+195	Svalbard And Jan Mayen	SJ
+196	Slovakia	SK
+197	Sierra Leone	SL
+198	San Marino	SM
+199	Senegal	SN
+200	Somalia	SO
+201	Suriname	SR
+202	South Sudan	SS
+203	Sao Tome and Principe	ST
+204	El Salvador	SV
+205	Sint Maarten	SX
+206	Syrian Arab Republic	SY
+207	Swaziland	SZ
+208	Turks and Caicos Islands	TC
+209	Chad	TD
+210	French Southern Territories	TF
+211	Togo	TG
+212	Thailand	TH
+213	Tajikistan	TJ
+214	Tokelau	TK
+215	Timor-Leste	TL
+216	Turkmenistan	TM
+217	Tunisia	TN
+218	Tonga	TO
+219	Turkey	TR
+220	Trinidad and Tobago	TT
+221	Tuvalu	TV
+222	Taiwan	TW
+223	Tanzania	TZ
+224	Ukraine	UA
+225	Uganda	UG
+226	United States Minor Outlying Islands	UM
+227	United States	US
+228	Uruguay	UY
+229	Uzbekistan	UZ
+230	Holy See	VA
+231	Saint Vincent And The Grenadines	VC
+232	Venezuela	VE
+233	Virgin Islands, British	VG
+234	Virgin Islands, U.S	VI
+235	Vietnam	VN
+236	Vanuatu	VU
+237	Wallis and Futuna	WF
+238	Samoa	WF
+239	Yemen	YE
+240	Mayotte	YT
+241	South Africa	ZA
+242	Zambia	ZM
+243	Zimbabwe	ZW
+\.
+
+
+--
+-- Data for Name: origins; Type: TABLE DATA; Schema: public; Owner: haranarbel
+--
+
+COPY public.origins (origin_id, destination_id) FROM stdin;
+70	104
+70	51
+70	84
+70	62
+70	97
+70	21
+70	178
+70	8
+104	70
+104	227
+104	219
+104	51
+104	37
+104	191
+104	53
+104	103
+104	97
+104	178
+104	6
+104	161
+98	93
+98	84
+98	21
+84	13
+84	21
+84	93
+84	23
+84	50
+84	58
+84	53
+84	49
+84	65
+84	70
+84	51
+84	95
+84	97
+84	104
+84	129
+84	127
+84	128
+84	147
+84	8
+84	173
+84	178
+84	194
+84	196
+84	62
+84	191
+227	98
+227	14
+227	165
+227	66
+227	108
+227	185
+227	171
+227	44
+227	57
+227	241
+13	21
+13	23
+13	93
+13	49
+13	50
+13	53
+13	58
+13	65
+13	70
+13	51
+13	84
+13	95
+13	97
+13	104
+13	129
+13	127
+13	128
+13	8
+13	173
+13	178
+13	183
+13	194
+13	196
+13	62
+13	191
+\.
+
+
+--
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: haranarbel
+--
+
+COPY public.users (user_id, name, email, country_id) FROM stdin;
+auth0|5f7ac591a6af640071d9a4c0	haranarbel@gmail.com	haranarbel@gmail.com	227
+\.
+
+
+--
+-- Name: country_id_seq; Type: SEQUENCE SET; Schema: public; Owner: haranarbel
+--
+
+SELECT pg_catalog.setval('public.country_id_seq', 1, false);
+
+
+--
+-- Name: country country_name_key; Type: CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.country
+    ADD CONSTRAINT country_name_key UNIQUE (name);
+
+
+--
+-- Name: country country_pkey; Type: CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.country
+    ADD CONSTRAINT country_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: users users_name_key; Type: CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_name_key UNIQUE (name);
+
+
+--
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (user_id);
+
+
+--
+-- Name: origins origins_destination_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.origins
+    ADD CONSTRAINT origins_destination_id_fkey FOREIGN KEY (destination_id) REFERENCES public.country(id);
+
+
+--
+-- Name: origins origins_origin_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.origins
+    ADD CONSTRAINT origins_origin_id_fkey FOREIGN KEY (origin_id) REFERENCES public.country(id);
+
+
+--
+-- Name: users users_country_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: haranarbel
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_country_id_fkey FOREIGN KEY (country_id) REFERENCES public.country(id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

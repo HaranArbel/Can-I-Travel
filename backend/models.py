@@ -4,9 +4,12 @@ from flask_sqlalchemy import SQLAlchemy
 
 import json
 
-# database_filename = "database.db"
+database_name = "capstone"
+database_path = "postgres://{}/{}".format('localhost:5432', database_name)
+
+# database_filename = "capstone"
 # project_dir = os.path.dirname(os.path.abspath(__file__))
-# database_path = "sqlite:///{}".format(os.path.join(project_dir, database_filename))
+# database_path = "postgres:///{}".format(os.path.join(project_dir, database_filename))
 
 db = SQLAlchemy()
 
@@ -17,11 +20,12 @@ setup_db(app)
 
 
 def setup_db(app):
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
+    # app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
+    app.config["SQLALCHEMY_DATABASE_URI"] = database_path
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)
-    db_drop_and_create_all()
+    # db_drop_and_create_all()
 
 
 origins = db.Table('origins',
