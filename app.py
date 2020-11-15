@@ -25,9 +25,9 @@ CORS(app)
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
-
-app.add_url_rule('/favicon.ico',
-                 redirect_to=url_for('static', filename='favicon.ico'))
+#
+# app.add_url_rule('/favicon.ico',
+#                  redirect_to=url_for('static', filename='favicon.ico'))
 
 #
 # @app.route('/favicon.ico')
