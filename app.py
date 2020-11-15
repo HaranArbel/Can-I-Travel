@@ -9,7 +9,7 @@ import re
 # create and configure the app
 from models import setup_db, Country, User
 
-app = Flask(__name__, static_folder='frontend/build', static_url_path='')
+app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
 # app = Flask(__name__, static_folder='./build', static_url_path='/')
 setup_db(app)
 CORS(app)
@@ -25,6 +25,12 @@ CORS(app)
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
+
+
+@app.route('/favicon.ico')
+def favicon():
+    return app.send_static_file('favicon.ico')
+
 #
 # app.add_url_rule('/favicon.ico',
 #                  redirect_to=url_for('static', filename='favicon.ico'))
