@@ -29,8 +29,8 @@ def index():
 
 @app.route('/favicon.ico')
 def favicon():
-    app.send_static_file('favicon.ico')
-    # return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+    # app.send_static_file('favicon.ico')
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
 
 
 @app.route('/users/<string:user_id>/role')
