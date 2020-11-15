@@ -31,15 +31,12 @@ def index():
 # def favicon():
 #     return app.send_static_file('favicon.ico')
 
-# #
-# app.add_url_rule('/favicon.ico',
-#                  redirect_to=url_for('static', filename='favicon.ico'))
-#
-# #
-# @app.route('/favicon.ico')
-# def favicon():
-#     # app.send_static_file('favicon.ico')
-#     return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
+@app.route('/favicon.ico')
+def favicon():
+    # app.send_static_file('favicon.ico')
+    # return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
+    return app.send_static_file('favicon.ico')
 
 
 @app.route('/users/<string:user_id>/role')
