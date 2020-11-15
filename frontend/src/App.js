@@ -6,7 +6,6 @@ import LoginPage from "./components/LoginPage";
 import SelectCountry from "./components/SelectCountry";
 import UserPage from "./components/UserPage";
 import {fetchUserRole} from "./components/API";
-import ListDestinations from "./components/ListDestinations";
 import ListCountries from "./components/ListCountries";
 
 export const AppStateContext = createContext({})
@@ -34,6 +33,7 @@ function App() {
 
     return (
         <div>
+            <p>Hello world!</p>
             <AppStateContext.Provider value={{
                 userRole,
                 countryId,

@@ -4,6 +4,8 @@ test.db
 venv
 env
 node_modules
+.env
+.gitignore
 
 # OS generated files #
 ######################
