@@ -6,6 +6,7 @@ env
 node_modules
 .env
 .gitignore
+env/
 
 # OS generated files #
 ######################
