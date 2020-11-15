@@ -9,7 +9,7 @@ import re
 # create and configure the app
 from models import setup_db, Country, User
 
-app = Flask(__name__, static_folder='frontend/build', static_url_path='')
+app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
 # app = Flask(__name__, static_folder='./build', static_url_path='/')
 setup_db(app)
 CORS(app)
@@ -20,9 +20,11 @@ CORS(app)
 # ----------------------------------------------------------------------------------
 # todo: think about scenario when user changes their location. they're already in the table and we do a POST, which will fail.
 #
-# @app.route('/')
-# def index():
-#     return send_from_directory(app.static_folder, 'index.html')
+
+
+@app.route('/')
+def index():
+    return send_from_directory(app.static_folder, 'index.html')
 
 
 @app.route('/users/<string:user_id>/role')
