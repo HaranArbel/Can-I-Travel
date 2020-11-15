@@ -9,7 +9,7 @@ import re
 # create and configure the app
 from models import setup_db, Country, User
 
-app = Flask(__name__, static_folder='frontend/build', static_url_path='/')
+app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 # app = Flask(__name__, static_folder='./build', static_url_path='/')
 setup_db(app)
 CORS(app)
