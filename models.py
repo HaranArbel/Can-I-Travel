@@ -20,8 +20,8 @@ setup_db(app)
 
 
 def setup_db(app):
-    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
-    # app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://hmrtkweoefhtag:6ac68d398c5cd05937f907bfb9ed4cb0c061099e5429d4bb287e86320b69cdc8@ec2-52-1-95-247.compute-1.amazonaws.com:5432/dkbh53nkp3t7s'
+    # app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
+    app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://wnxecpkgqwxymf:8d85ab140d3713a1e5b7b95938aa09ae203ad999409dde9b4dcd08c3b24b6b43@ec2-52-44-139-108.compute-1.amazonaws.com:5432/d64ml0dq63ui2f'
     # app.config["SQLALCHEMY_DATABASE_URI"] = database_path #todo?
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
