@@ -5,7 +5,7 @@ export const fetchUserRole = async (token, user_id) => {
         const response = await fetch(`/users/${user_id}/role`, {
             headers: {
                 Accept: 'application/json',
-                Authorization: `Bearer ${token}`,
+                // Authorization: `Bearer ${token}`,
             },
         });
         const responseData = await response.json();
