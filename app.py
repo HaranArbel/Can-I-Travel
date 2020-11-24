@@ -43,9 +43,14 @@ def index():
 @requires_auth('get:user_role')
 def get_user_role(payload, user_id):
     role = payload["http://demozero.net/roles"][0]
-    return jsonify({
-        'role': role
-    })
+    if role == 'admin':
+        return jsonify({
+            'role': role
+        })
+    else:
+        return jsonify({
+            'role': 'visitor'
+        })
 
 
 @app.route('/users/add', methods=['POST'])
