@@ -53,7 +53,7 @@ function App() {
                                 <LoginPage/>
                                 :
                                 <div>
-                                    <LogoutButton>Log out</LogoutButton>
+                                    <LogoutButton/>
                                     <Link to='/countries'>countries</Link>
                                     <UserPage/>
                                 </div>}
