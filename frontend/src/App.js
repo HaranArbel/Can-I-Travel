@@ -7,6 +7,8 @@ import SelectCountry from "./components/SelectCountry";
 import UserPage from "./components/UserPage";
 import {fetchUserRole} from "./components/API";
 import ListCountries from "./components/ListCountries";
+import LoginButton from "./components/LoginButton";
+import LogoutButton from "./components/LogoutButton";
 
 export const AppStateContext = createContext({})
 
@@ -51,6 +53,7 @@ function App() {
                                 <LoginPage/>
                                 :
                                 <div>
+                                    <LogoutButton>Log out</LogoutButton>
                                     <Link to='/countries'>countries</Link>
                                     <UserPage/>
                                 </div>}
