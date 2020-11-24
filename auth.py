@@ -90,10 +90,13 @@ def check_permissions(permission, payload):
             'description': 'Permissions not included in JWT.'
         }, 400)
 
-    if payload["http://demozero.net/roles"][0] == 'admin':
+    # special case
+    if payload["http://demozero.net/roles"][0]:
         print("this is the admin user")
-    else:
+    elif permission == "get:user_role":
         print("this is a visitor")
+        return True
+
     if permission not in payload['permissions']:
         raise AuthError({
             'code': 'unauthorized',
