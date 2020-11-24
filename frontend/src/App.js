@@ -35,7 +35,7 @@ function App() {
 
     return (
         <div>
-            <p>Hello world!</p>
+            <p>Hello world</p>
             <AppStateContext.Provider value={{
                 userRole,
                 countryId,
