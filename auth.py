@@ -91,7 +91,7 @@ def check_permissions(permission, payload):
         }, 400)
 
     # special case
-    if payload["http://demozero.net/roles"][0]:
+    if payload["http://demozero.net/roles"]:
         print("this is the admin user")
     elif permission == "get:user_role":
         print("this is a visitor")
