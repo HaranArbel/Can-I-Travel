@@ -35,8 +35,6 @@ function App() {
 
     return (
         <div>
-            <p>Hello world</p>
-            <p>Hello worldddd</p>
             <AppStateContext.Provider value={{
                 userRole,
                 countryId,
@@ -57,7 +55,6 @@ function App() {
                                     <Link to='/countries'>countries</Link>
                                     <UserPage/>
                                     <LogoutButton/>
-                                    Helllo
                                 </div>}
                         </div>
                     );

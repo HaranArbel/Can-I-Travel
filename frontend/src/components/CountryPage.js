@@ -42,7 +42,6 @@ export default function CountryPage() {
     return (
         !country ? (<p>Loading...</p>) : (
             <div>
-                <p>Hellllllllllllo</p>
                 <div>
                     <div
                         className='destination-avatar'
