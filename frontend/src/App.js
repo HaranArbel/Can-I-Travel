@@ -53,9 +53,9 @@ function App() {
                                 <LoginPage/>
                                 :
                                 <div>
-                                    <LogoutButton/>
                                     <Link to='/countries'>countries</Link>
                                     <UserPage/>
+                                    <LogoutButton/>
                                 </div>}
                         </div>
                     );
