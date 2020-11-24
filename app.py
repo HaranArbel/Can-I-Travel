@@ -14,6 +14,7 @@ app = Flask(__name__, static_folder='frontend/build', static_url_path='')
 setup_db(app)
 CORS(app)
 
+
 # AD = Country(id=1, name="Andorra", alias="AD")
 # AD.insert()
 
@@ -25,6 +26,7 @@ CORS(app)
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
+
 
 #
 # @app.route('/favicon.ico')
@@ -40,15 +42,14 @@ def index():
 
 
 @app.route('/users/<string:user_id>/role')
-@requires_auth('get:user_role') #todo ?
+@requires_auth('get:user_role')  # todo ?
 def get_user_role(payload, user_id):
     if payload["http://demozero.net/roles"]:
-       role = payload["http://demozero.net/roles"][0]
-
-    if role == 'admin':
-        return jsonify({
-            'role': role
-        })
+        role = payload["http://demozero.net/roles"][0]
+        if role == 'admin':
+            return jsonify({
+                'role': role
+            })
     else:
         return jsonify({
             'role': 'visitor'
