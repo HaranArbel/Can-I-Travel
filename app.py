@@ -40,7 +40,7 @@ def index():
 
 
 @app.route('/users/<string:user_id>/role')
-# @requires_auth('get:user_role') #todo ?
+@requires_auth('get:user_role') #todo ?
 def get_user_role(payload, user_id):
     role = payload["http://demozero.net/roles"][0]
     if role == 'admin':

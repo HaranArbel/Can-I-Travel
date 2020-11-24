@@ -25,7 +25,13 @@ function App() {
         async function getUserRole() {
             const token = await getAccessTokenSilently();
             const {role} = await fetchUserRole(token, user.sub)
-            setUserRole(role)
+            if (role === 'admin'){
+                setUserRole('admin')
+            }
+            else{
+                setUserRole('visitor')
+            }
+
         }
 
         if (isAuthenticated) {
