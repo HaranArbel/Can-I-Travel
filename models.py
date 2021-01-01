@@ -2,15 +2,6 @@ import os
 from sqlalchemy import Column, String, Integer
 from flask_sqlalchemy import SQLAlchemy
 
-import json
-
-# database_name = "capstone"
-# database_path = "postgres://{}/{}".format('localhost:5432', database_name)#todo?
-
-# database_filename = "capstone"
-# project_dir = os.path.dirname(os.path.abspath(__file__))
-# database_path = "postgres:///{}".format(os.path.join(project_dir, database_filename))
-
 db = SQLAlchemy()
 
 '''
@@ -20,9 +11,7 @@ setup_db(app)
 
 
 def setup_db(app):
-    # app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://haranarbel@localhost:5432/capstone'
-    # app.config["SQLALCHEMY_DATABASE_URI"] = 'postgres://wnxecpkgqwxymf:8d85ab140d3713a1e5b7b95938aa09ae203ad999409dde9b4dcd08c3b24b6b43@ec2-52-44-139-108.compute-1.amazonaws.com:5432/d64ml0dq63ui2f'
-    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL') #todo?
+    app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get('DATABASE_URL')
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     db.app = app
     db.init_app(app)

@@ -1,44 +1,19 @@
 import os
-from flask import Flask, request, abort, jsonify, send_from_directory, url_for
+from flask import Flask, request, abort, jsonify
 from flask_cors import CORS
 import json
 
-from auth import requires_auth  # ,AuthError
-import re
-# def create_app(test_config=None):
-# create and configure the app
+from auth import requires_auth
 from models import setup_db, Country, User
 
 app = Flask(__name__, static_folder='frontend/build', static_url_path='')
-# app = Flask(__name__, static_folder='./build', static_url_path='/')
 setup_db(app)
 CORS(app)
-
-
-# AD = Country(id=1, name="Andorra", alias="AD")
-# AD.insert()
-
-# ----------------------------------------------------------------------------------
-# todo: think about scenario when user changes their location. they're already in the table and we do a POST, which will fail.
-#
 
 
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
-
-
-#
-# @app.route('/favicon.ico')
-# def favicon():
-#     return app.send_static_file('favicon.ico')
-
-#
-# @app.route('/favicon.ico')
-# def favicon():
-#     # app.send_static_file('favicon.ico')
-#     # return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico')
-#     return app.send_static_file('favicon.ico')
 
 
 @app.route('/users/<string:user_id>/role')
