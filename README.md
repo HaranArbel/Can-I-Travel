@@ -2,7 +2,7 @@
 
 ## Project Motivation
 
-During COVID times it is very hard to travel when you don't know where you can travel to. Even if you wish to travel to a "green" country, that country may not consider your country "green" and therefore not allow you to enter the country. 
+During COVID times it is very hard to travel when you don't know where you can travel to. Even if you wish to travel to a "green" country, that country may not consider your country "green" and therefore not allow you to enter its borders. 
 
 Beacuse of the fact that things are changing all the time and because this is the first time the world is facing such heavy travel restrictions, it is hard to easily find reliable information.
 
