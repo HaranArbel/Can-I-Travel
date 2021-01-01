@@ -6,9 +6,9 @@ During COVID times it is very hard to travel when you don't know where you can t
 
 Beacuse of the fact that things are changing so fast and because this is the first time the world is facing such heavy travel restrictions, it is hard to easily find reliable information.
 
-That's why I built this website, to allow countries to update their "green" countries list, add and remove "green" countries based on the changing situation so everyone can easily know where they can travel.
+That's why I built this website, to allow users to easily check where they can travel, and countries to update their "green" countries list based on the changing situation, telling users who can enter thei borders.
 
-A new user on the website can choose the country where he will be traveling from. This preference will be saved on the website and the user can change it later. After Choosing a country the user will be presented with a list of all of the countries to which he can travel - 
+A new user on the website can choose the country from where he would like to travel. This preference will be saved on the website and the user can change it later. After Choosing a country the user will be presented with a list of all of the countries to which he can travel - 
 
 the countries that are considred "green" by his country, and therefore safe to travel to, and which consider his country "green" and by that allowing him to enter.
 
