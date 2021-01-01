@@ -42,17 +42,17 @@ To start and run the app please do the following:
 #### Backend
 
 - Please make sure that you installed all above-mentioned dependencies
-- Cd into the backend folder and run:
+- Cd into the root folder and run:
   ```
   $ pip install -r requirements.txt
   ```
 - Run the development server:
   ```
-  $ export FLASK_APP=flaskr
+  $ export FLASK_APP=app.py
   $ export FLASK_ENV=development # enables debug mode
   $ flask run
   ```
-- Test your endpoints and/or curl via [http://127.0.0.1:5000/](http://127.0.0.1:5000/)  
+- Test your endpoints and/or curl via [http://127.0.0.1:5000/](http://127.0.0.1:5000/), which is set as a proxy in the fronted configuration.
 
 
 #### Frontend
@@ -62,11 +62,11 @@ To start and run the app please do the following:
 - Run npm install and npm run subsequently
 - Run the development server:
   ```
-  $ export FLASK_APP=myapp
+  $ export FLASK_APP=app
   $ export FLASK_ENV=development # enables debug mode
   $ python3 app.py
   ```
-- Navigate to Home page [http://localhost:5000](http://localhost:5000)
+- Navigate to Home page [http://localhost:3000](http://localhost:3000)
 
 
 ## API Endpoints
