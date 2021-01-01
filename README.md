@@ -4,7 +4,7 @@
 
 During COVID times it is very hard to travel when you don't know where you can travel to. Even if you wish to travel to a "green" country, that country may not consider your country "green" and therefore not allow you to enter its borders. 
 
-Beacuse of the fact that things are changing all the time and because this is the first time the world is facing such heavy travel restrictions, it is hard to easily find reliable information.
+Beacuse of the fact that things are changing so fast and because this is the first time the world is facing such heavy travel restrictions, it is hard to easily find reliable information.
 
 That's why I built this website, to allow countries to update their "green" countries list, add and remove "green" countries based on the changing situation so everyone can easily know where they can travel.
 
