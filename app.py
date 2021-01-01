@@ -193,6 +193,7 @@ def unprocessable(error):
       "message": "unprocessable"
     }), 422
 
+
 @app.errorhandler(405)
 def not_allowed(error):
     return jsonify({

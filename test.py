@@ -25,14 +25,6 @@ class TriviaTestCase(unittest.TestCase):
             # create all tables
             self.db.create_all()
 
-        # self.new_question = {
-        #     'id': 11,
-        #     'question': "What boxer's original name is Cassius Clay?",
-        #     'answer': 'Muhammad Ali',
-        #     'difficulty:': 1,
-        #     'category': 5
-        # }
-
     def tearDown(self):
         """Executed after reach test"""
         pass
