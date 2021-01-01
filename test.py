@@ -4,7 +4,7 @@ import json
 from flask_sqlalchemy import SQLAlchemy
 
 from app import create_app
-from models import setup_db, Question, Category
+from models import setup_db, Country, User
 
 
 class TriviaTestCase(unittest.TestCase):
@@ -25,13 +25,13 @@ class TriviaTestCase(unittest.TestCase):
             # create all tables
             self.db.create_all()
 
-        self.new_question = {
-            'id': 11,
-            'question': "What boxer's original name is Cassius Clay?",
-            'answer': 'Muhammad Ali',
-            'difficulty:': 1,
-            'category': 5
-        }
+        # self.new_question = {
+        #     'id': 11,
+        #     'question': "What boxer's original name is Cassius Clay?",
+        #     'answer': 'Muhammad Ali',
+        #     'difficulty:': 1,
+        #     'category': 5
+        # }
 
     def tearDown(self):
         """Executed after reach test"""
@@ -41,101 +41,88 @@ class TriviaTestCase(unittest.TestCase):
     TODO
     Write at least one test for each test for successful operation and for expected errors.
     """
-    def test_get_paginated_questions(self):
-        res = self.client().get('/questions')
+    def test_get_countries(self):
+        res = self.client().get('/countries')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(data['total_questions'])
-        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['countries'])
+        self.assertTrue(len(data['countries']))
 
-    def test_404_sent_requesting_beyond_valid_page(self):
-        res = self.client().get('/questions?page=1000')
+    # check when data base is empty, before running psql test_db < capstone.psql
+    def test_404_if_no_countries_exist(self):
+        res = self.client().get('/countries')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
-    def test_add_question(self):
-        res = self.client().post('/questions/add', json=self.new_question)
+    def test_get_country_by_id(self):
+        res = self.client().get('/countries/1')
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(data['total_questions'])
-        self.assertTrue(len(data['questions']))
+        self.assertTrue(data['country'])
+        self.assertTrue(len(data['countries']))
 
-    def test_405_if_adding_question_not_allowed(self):
-        res = self.client().post('/questions/4', json = self.new_question)
+    def test_404_if_country_doesnt_exist(self):
+        res = self.client().get('/countries/1000')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_get_destinations_for_country(self):
+        res = self.client().get('/countries/1/destinations')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['destinations'])
+
+    def test_404_if_country_does_not_exist(self):
+        res = self.client().get('/countries/1000/destinations')
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 404)
+        self.assertEqual(data['success'], False)
+        self.assertEqual(data['message'], 'resource not found')
+
+    def test_add_destination(self):
+        res = self.client().post('/countries/1/add_destination', json={'destinationId': 2})
+        data = json.loads(res.data)
+
+        self.assertEqual(res.status_code, 200)
+        self.assertTrue(data['destinations'])
+        self.assertTrue(len(data['destinations']))
+
+    def test_405_if_adding_destination_not_allowed(self):
+        res = self.client().post('/countries/1000', json={'destinationId': 2})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 405)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'method not allowed')
 
-    def test_delete_question(self):
-        res = self.client().delete('/questions/9')
+    def test_delete_destination(self):
+        res = self.client().delete('/countries/1', json={'destinationId': 2})
         data = json.loads(res.data)
 
-        question = Question.query.filter(Question.id == 9).one_or_none()
+        destination = Country.query.filter(Country.id == 2).one_or_none()
 
         self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertEqual(data['deleted'], 9)
-        self.assertTrue(data['total_questions'])
-        self.assertTrue(len(data['questions']))
-        self.assertEqual(question, None)
+        self.assertTrue(data['destinations'])
+        self.assertTrue(destination not in data['destinations'])
 
-    def test_422_if_question_does_not_exist(self):
-        res = self.client().delete('/questions/1000')
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 422)
-        self.assertEqual(data['success'], False)
-        self.assertEqual(data['message'], 'unprocessable')
-
-    def test_get_questions_by_category(self):
-        res = self.client().get('/categories/1/questions')
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(len(data['questions']))
-
-    def test_404_if_category_does_not_exist(self):
-        res = self.client().get('/categories/1000/questions')
+    def test_404_if_country_does_not_exist(self):
+        res = self.client().delete('/countries/1000', json={'destinationId': 2})
         data = json.loads(res.data)
 
         self.assertEqual(res.status_code, 404)
         self.assertEqual(data['success'], False)
         self.assertEqual(data['message'], 'resource not found')
 
-    def test_search_question(self):
-        res = self.client().post('/questions', json={'searchTerm': 'Africa'})
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertTrue(data['questions'])
-        self.assertEqual(len(data['questions']), 1)
-
-    def test_play(self):
-        res = self.client().post('/play', json={'previous_questions': [], 'quiz_category': {'id': '5', 'type': 'Entertainment'}})
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertTrue(data['question'])
-        self.assertEqual(data['question']['category'], 5)
-
-    def test_playing_with_all_categories(self):
-        json_data = {'previous_questions': [], 'quiz_category': {"type": "click", "id": 0}}
-        res = self.client().post('/play', json=json_data)
-        data = json.loads(res.data)
-
-        self.assertEqual(res.status_code, 200)
-        self.assertEqual(data['success'], True)
-        self.assertTrue(data['question'])
 
 # Make the tests conveniently executable
 if __name__ == "__main__":
