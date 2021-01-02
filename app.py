@@ -116,21 +116,6 @@ def delete_destination(payload, country_id):
         abort(422)
 
 
-@app.route('/users/<string:user_id>/role')
-@requires_auth('get:user_role')  # todo ?
-def get_user_role(payload, user_id):
-    if payload["http://demozero.net/roles"]:
-        role = payload["http://demozero.net/roles"][0]
-        if role == 'admin':
-            return jsonify({
-                'role': role
-            })
-    else:
-        return jsonify({
-            'role': 'visitor'
-        })
-
-
 @app.route('/users/add', methods=['POST'])
 @requires_auth('post:user_preference')
 def add_user(payload):
@@ -156,6 +141,21 @@ def add_user(payload):
         })
     except:
         abort(422)
+
+
+@app.route('/users/<string:user_id>/role')
+@requires_auth('get:user_role')
+def get_user_role(payload, user_id):
+    if payload["http://demozero.net/roles"]:
+        role = payload["http://demozero.net/roles"][0]
+        if role == 'admin':
+            return jsonify({
+                'role': role
+            })
+    else:
+        return jsonify({
+            'role': 'visitor'
+        })
 
 
 @app.route('/users/<string:user_id>')
