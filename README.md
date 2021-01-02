@@ -158,4 +158,8 @@ The API will return four error types when requests fail:
 * 405: Method Not Allowed
 * 422: Not Processable
 
+### RBAC Control
 
+There are two types of roles on this website - regular users and admin users.
+
+Admin users are able to add and delete destinations to countries' destination lists.
