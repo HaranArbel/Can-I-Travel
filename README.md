@@ -130,7 +130,7 @@ To start and run the app please do the following:
 {
   "new_user": [
     {
-      "id": "JohnDoe123",
+      "id": "google-oauth2|100336339666704370398",
       "name": "John Doe",
       "email": "JohnDoe@gmail.com",
       "country_id": 4,
