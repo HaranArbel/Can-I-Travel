@@ -125,7 +125,7 @@ To start and run the app please do the following:
 ### POST '/users/add'
 ### General:
 - Returns a description of the new user with the country preference (a country which the user chose to travel from).
-- Sample: curl -X POST http://127.0.0.1:5000/users/add -H "Content-Type: application/json" -d '{"userId": "JohnDoe123", "name": "John Doe","email":     "JohnDoe@gmail.com","country_id": 4}
+- Sample: curl -X POST http://127.0.0.1:5000/users/add -H "Content-Type: application/json" -d '{"userId": "JohnDoe123", "name": "John Doe","email":     "JohnDoe@gmail.com","countryId": 4}
 ```json
 {
   "new_user": [
