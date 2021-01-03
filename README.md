@@ -8,9 +8,7 @@ Beacuse of the fact that things are changing so fast and because this is the fir
 
 That's why I built this website, to allow users to easily check where they can travel, and countries to update their "green" countries list based on the changing situation, telling users who can enter thei borders.
 
-A new user on the website can choose the country from where he would like to travel. This preference will be saved on the website and the user can change it later. After Choosing a country the user will be presented with a list of all of the countries to which he can travel - 
-
-the countries that are considred "green" by his country, and therefore safe to travel to, and which consider his country "green" and by that allowing him to enter.
+A new user on the website can choose the country from where he would like to travel. This preference will be saved on the website and the user can change it later. After Choosing a country the user will be presented with a list of all of the countries to which he can travel - the countries that are considred "green" by his country, and therefore safe to travel to, and which consider his country "green" and by that allowing him to enter.
 
 Traveling in COVID times has never been easier! :)
 
@@ -162,4 +160,6 @@ The API will return four error types when requests fail:
 
 There are two types of roles on this website - regular users and admin users.
 
-Admin users are able to add and delete destinations to countries' destination lists.
+Regular users are able to watch the list of destnations to which they can travel.
+
+Admin are able to do what regular users do, and also add and delete destinations to countries' destination lists.
