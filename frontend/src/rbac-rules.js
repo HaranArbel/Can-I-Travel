@@ -1,6 +1,6 @@
 const rules = {
   visitor: {
-    static: ["get:countries", "get:user_role", "get:destinations"]
+    static: ["get:countries", "get:user_role", "get:destinations", "get:user", "post:user_preference"]
   },
   // writer: {
   //   static: [
