@@ -19,8 +19,10 @@ def setup_db(app):
 
 
 origins = db.Table('origins',
-                   db.Column('origin_id', db.Integer, db.ForeignKey('country.id')),
-                   db.Column('destination_id', db.Integer, db.ForeignKey('country.id'))
+                   db.Column('origin\
+                   _id', db.Integer, db.ForeignKey('country.id')),
+                   db.Column('destination\
+                   _id', db.Integer, db.ForeignKey('country.id'))
                    )
 
 
@@ -67,11 +69,12 @@ class Country(db.Model):
         }
 
     def long(self):
+        dests = [destination.short() for destination in self.destinations]
         return {
             'id': self.id,
             'name': self.name,
             'alias': self.alias,
-            'destinations': [destination.short() for destination in self.destinations],
+            'destinations': dests,
         }
 
     def __repr__(self):
@@ -120,7 +123,8 @@ class User(db.Model):
 db_drop_and_create_all()
     drops the database tables and starts fresh
     can be used to initialize a clean database
-    !!NOTE you can change the database_filename variable to have multiple verisons of a database
+    !!NOTE you can change the database_filename variable \
+    to have multiple verisons of a database
 '''
 
 

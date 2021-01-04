@@ -53,8 +53,10 @@ def get_country(payload, country_id):
 @app.route('/countries/<int:country_id>/destinations')
 @requires_auth('get:destinations')
 def get_destinations(payload, country_id):
-    """get the list of all the "green" destinations to which you can go on vacation. If a destination is considered
-    "green" by your country and also your country is considered green by the destination country, then you can safely
+    """get the list of all the "green" destinations to which you can \
+    go on vacation. If a destination is considered "green" by your \
+    country and also your country is considered green by the \
+    destination country, then you can safely
     travel to this destination"""
     try:
         country = Country.query.filter(Country.id == country_id).first()
@@ -62,7 +64,8 @@ def get_destinations(payload, country_id):
             abort(404)
         data = []
         for dest in country.destinations:
-            if country in Country.query.filter(Country.id == dest.id).first().destinations:
+            filtered = Country.query.filter(Country.id == dest.id).first()
+            if country in filtered.destinations:
                 data.append(dest)
 
         return jsonify({
@@ -75,43 +78,49 @@ def get_destinations(payload, country_id):
 @app.route('/countries/<int:country_id>/add_destination', methods=['PATCH'])
 @requires_auth('post:destination')
 def add_destination(payload, country_id):
-    """add a "green" country (destination) to a given country "green countries" list"""
+    """add a "green" country (destination) to a given \
+    country "green countries" list"""
     try:
         country = Country.query.filter(Country.id == country_id).first()
         body = request.get_json()
         destination_id = body.get('destinationId')
-        destination = Country.query.filter(Country.id == destination_id).first()
+        dest = Country.query.filter(Country.id == destination_id).first()
 
-        if not country or destination.id == country_id:
+        if not country or dest.id == country_id:
             abort(405)
 
-        if destination not in country.destinations:
-            country.destinations.append(destination)
+        if dest not in country.destinations:
+            country.destinations.append(dest)
         country.update()
 
+        dests = [destination.short() for destination in country.destinations]
         return jsonify({
-            'destinations': [destination.short() for destination in country.destinations],
+            'destinations': dests,
         })
     except Exception:
         abort(422)
 
 
-@app.route('/countries/<int:country_id>/delete_destination', methods=['DELETE'])
+@app.route('/countries/<int:country_id>\
+/delete_destination', methods=['DELETE'])
 @requires_auth('delete:destination')
 def delete_destination(payload, country_id):
-    """delete a "green country (destination) from the country's destinations list"""
+    """delete a "green country (destination) from \
+    the country's destinations list"""
     try:
         country = Country.query.filter(Country.id == country_id).first()
         body = request.get_json()
         destination_id = body.get('destinationId')
-        destination = Country.query.filter(Country.id == destination_id).first()
-        if not country or not destination:
+
+        dest = Country.query.filter(Country.id == destination_id).first()
+        if not country or not dest:
             abort(404)
-        country.destinations.remove(destination)
+        country.destinations.remove(dest)
         country.update()
 
+        dests = [destination.short() for destination in country.destinations]
         return jsonify({
-            'destinations': [destination.short() for destination in country.destinations],
+            'destinations': dests,
         })
     except Exception:
         abort(422)
@@ -149,14 +158,17 @@ def add_user(payload):
 def get_user_role(payload, user_id):
     if payload["http://demozero.net/roles"]:
         role = payload["http://demozero.net/roles"][0]
+        print("user role: " + role)
         if role == 'admin':
             return jsonify({
                 'role': role
             })
+        else:
+            return jsonify({
+                'role': 'visitor'
+            })
     else:
-        return jsonify({
-            'role': 'visitor'
-        })
+        raise Exception("Error: Could not read user role")
 
 
 @app.route('/users/<string:user_id>')
