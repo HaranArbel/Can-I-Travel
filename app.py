@@ -29,7 +29,7 @@ def get_countries(payload):
         return jsonify({
             'countries': [country.short() for country in countries]
         })
-    except:
+    except Exception:
         abort(422)
 
 
@@ -46,15 +46,16 @@ def get_country(payload, country_id):
         return jsonify({
             'country': country.long()
         })
-    except:
+    except Exception:
         abort(422)
 
 
 @app.route('/countries/<int:country_id>/destinations')
 @requires_auth('get:destinations')
 def get_destinations(payload, country_id):
-    """get the list of all the "green" destinations to which you can go on vacation. If a destination is considered "green" by your country
-    and also your country is considered green by the destination country, then you can safely travel to this destination"""
+    """get the list of all the "green" destinations to which you can go on vacation. If a destination is considered
+    "green" by your country and also your country is considered green by the destination country, then you can safely
+    travel to this destination"""
     try:
         country = Country.query.filter(Country.id == country_id).first()
         if not country:
@@ -67,7 +68,7 @@ def get_destinations(payload, country_id):
         return jsonify({
             'destinations': [item.short() for item in data]
         })
-    except:
+    except Exception:
         abort(422)
 
 
@@ -91,7 +92,7 @@ def add_destination(payload, country_id):
         return jsonify({
             'destinations': [destination.short() for destination in country.destinations],
         })
-    except:
+    except Exception:
         abort(422)
 
 
@@ -112,7 +113,7 @@ def delete_destination(payload, country_id):
         return jsonify({
             'destinations': [destination.short() for destination in country.destinations],
         })
-    except:
+    except Exception:
         abort(422)
 
 
@@ -139,7 +140,7 @@ def add_user(payload):
         return jsonify({
             'new_user': user.short(),
         })
-    except:
+    except Exception:
         abort(422)
 
 
@@ -172,7 +173,7 @@ def get_country_for_user(payload, user_id):
             return jsonify({
                 'country_id': ''
             })
-    except:
+    except Exception:
         abort(422)
 
 
